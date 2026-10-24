@@ -2,6 +2,8 @@
 
 Landing page ở `/` và app ôn trắc nghiệm ở `/app/`. Toàn bộ là HTML/CSS/JS tĩnh, không build, không backend, không tài khoản. Tiến độ lưu trong `localStorage` của trình duyệt.
 
+Bản đang chạy: https://kimducanh27-cpu.github.io/so-on-gdct1/
+
 App ôn 100 câu GDCT1 từ 70 ảnh đề, lên lịch 20 ngày tới **12.11.2026**, có chuỗi ngày học, nhắc qua `.ics`, thi thử và tra – gán đáp án.
 
 ## Chạy thử

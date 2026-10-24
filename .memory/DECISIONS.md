@@ -126,6 +126,7 @@
 **Loại:** Tự duyệt và triển khai ngay.
 **Lý do:** Đúng chỉ đạo và W8.
 **Hệ quả:** Khi duyệt plan, bắt đầu từ T-BASE-01; deploy chỉ sau M4 + Q1.
+**Cập nhật 2026-10-24:** Q1 đã được trả lời “cho phép push + deploy”; xem quyết định deploy bên dưới.
 **Ảnh hưởng:** Toàn bộ TASKS; T-DEPLOY-01.
 
 ## 2026-10-24 — Marionette keyboard gate: bỏ probe, retry connect + handshake
@@ -137,3 +138,13 @@
 **Lý do:** Probe và kết nối thật không nguyên tử — listener Marionette có thể vắng giữa hai lần trong lúc khởi động/khởi động lại. Retry có điều kiện giữ gate fail-closed nếu Marionette không lên, đồng thời không che lỗi app.
 **Kiểm chứng:** 5/5 cặp BiDi → Marionette pass sau sửa; `bash scripts/verify.sh` exit 0.
 **Ảnh hưởng:** T-QA-01, T-DOC-01.
+
+## 2026-10-24 — Deploy production từ `main`, giữ nhánh `landing-page`
+
+**Bối cảnh:** M4 đã pass `verify.sh`; người dùng trả lời Q1 “Cho phép push + deploy” và xác nhận “Đồng ý, deploy từ main”, đồng thời chọn giữ nhánh.
+**Chọn:** Fast-forward `landing-page` vào `main`, push `main` lên `origin`, để GitHub Pages (source `main`, `/`, legacy) build; giữ nguyên nhánh `landing-page` tại cùng commit; không force push.
+**Loại:** Push trực tiếp nhánh feature và đổi Pages source; tạo tag/release; xoá nhánh sau merge.
+**Lý do:** `main` là nguồn Pages đã cấu hình; fast-forward giữ lịch sử tuyến tính và không tạo merge commit không cần thiết. Giữ nhánh để đối chiếu/rollback mềm. Rollback chuẩn là `git revert b3f89a1` + push, không force.
+**Kiểm chứng:** Push `e4cac8c..b3f89a1`; live 200 với landing mới; 14 endpoint 200; redirect legacy 5 route; Chromium/Firefox/pa11y live pass; LHCI live 3 run exit 0 (Perf 1.0, A11y/BP/SEO 1, LCP 1,379 ms).
+**Lưu ý:** Khi test redirect legacy phải tải document mới; `Page.navigate` chỉ đổi hash trong cùng document sẽ không chạy lại `landing.js` — đây là artifact của test, không phải lỗi sản phẩm.
+**Ảnh hưởng:** T-DEPLOY-01, README, PROJECT_STATE.

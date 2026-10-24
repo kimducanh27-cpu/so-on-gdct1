@@ -19,7 +19,7 @@ Plan: `.plan/PLAN.md` · Research: `.memory/RESEARCH.md` · Quyết định: `.m
 | T-PERF-01 | Budget Lighthouse mobile | S | U2 | T-LAND-03, T-ASSET-01 | M3 | done-verified |
 | T-QA-01 | `verify.sh` + smoke toàn bộ | S | U2 | tất cả trừ DOC/DEPLOY | M3/M4 | done-verified |
 | T-DOC-01 | README, rollback, bàn giao | S | U1 | T-QA-01 | M4 | done-verified |
-| T-DEPLOY-01 | Deploy Pages + smoke live | S | U2 | T-DOC-01 + Q1 | M5 | blocked |
+| T-DEPLOY-01 | Deploy Pages + smoke live | S | U2 | T-DOC-01 + Q1 | M5 | done-verified |
 
 Tổng: 13 task (6 M, 7 S). Nền = 3/13 = 23% (< 25%). Không task XL, không U3.
 
@@ -148,10 +148,10 @@ Tổng: 13 task (6 M, 7 S). Nền = 3/13 = 23% (< 25%). Không task XL, không U
 - **Bằng chứng:** clone tạm + server; linkinator; `git log`.
 - **Kết quả 2026-10-24:** commit local `f6f2ac5` (không push). Clone sạch đúng commit, `node scripts/serve.mjs` → 200 cho `/`, `/app/`, `/app/#/today`, CSS, data; linkinator nội bộ 18 link, 0 chết; `bash scripts/verify.sh` exit 0 trên cây làm việc.
 
-### T-DEPLOY-01 — Deploy Pages + smoke live (blocked)
+### T-DEPLOY-01 — Deploy Pages + smoke live
 - **Mục tiêu:** phát hành bản M4 lên GitHub Pages.
 - **File:** không sửa thêm; push commit đã duyệt.
 - **DoR:** T-DOC-01 xong **và Q1 được trả lời “cho phép”**.
 - **DoD:** live `/` + `/app/` 200; CTA; redirect legacy; SW cũ được gỡ; Lighthouse live; tag/commit rollback.
 - **Bằng chứng:** URL live, commit hash, screenshot, LHCI.
-- **Blocker:** `[CẦN QUYẾT] Q1` — quyền push/deploy.
+- **Kết quả 2026-10-24:** Q1 = cho phép push + deploy từ `main`, giữ nhánh `landing-page`. Fast-forward `main` → `b3f89a1`, push `e4cac8c..b3f89a1`, Pages build từ `main` `/`. Live https://kimducanh27-cpu.github.io/so-on-gdct1/ trả 200 với landing mới (title “100 câu, 20 ngày tới 12.11.2026”, 1 h1, CTA `./app/#/today`); `/app/` 200 + `noindex`; `assets/og-cover.png` 200 (128,061 B, `image/png`); root `sw.js` kill-switch, `app/sw.js` `gdct1-v4`, manifest `id: "../"`; 404 tùy biến 404 + đúng nội dung; robots + sitemap 200. Redirect legacy từ tải trang mới: `#/check|today|library|exam-setup|stats` → `/app/#/...`, app render 418–25,082 ký tự. Chromium live audit pass toàn bộ (5 viewport, 8 route, keyboard 24 bước, FAQ, reduced motion, 0 third-party, 0 console error); Firefox BiDi + Marionette pass; pa11y 2/2 URL 0 error; LHCI live 3 run: Perf 1.0/0.99/1.0, A11y 1, BP 1, SEO 1, LCP median 1,379 ms, TBT 0, CLS 0, TTFB 25 ms, 122,129 B. Rollback: `git revert b3f89a1` + push (không force). Chưa kiểm chứng: cài PWA thật/gỡ bản cài cũ, WebKit/iOS.
