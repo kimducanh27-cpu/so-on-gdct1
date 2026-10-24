@@ -148,3 +148,32 @@
 **Kiểm chứng:** Push `e4cac8c..b3f89a1`; live 200 với landing mới; 14 endpoint 200; redirect legacy 5 route; Chromium/Firefox/pa11y live pass; LHCI live 3 run exit 0 (Perf 1.0, A11y/BP/SEO 1, LCP 1,379 ms).
 **Lưu ý:** Khi test redirect legacy phải tải document mới; `Page.navigate` chỉ đổi hash trong cùng document sẽ không chạy lại `landing.js` — đây là artifact của test, không phải lỗi sản phẩm.
 **Ảnh hưởng:** T-DEPLOY-01, README, PROJECT_STATE.
+
+## 2026-10-25 — UI v2 “Phiếu thi & bút đỏ”: đổi trình bày, không đổi dữ liệu/hành vi
+
+**Bối cảnh:** Brief v2 yêu cầu làm rõ ngôn ngữ “phiếu thi & bút đỏ” cho cả landing + app; người dùng đã duyệt mockup và yêu cầu “cải thiện GUI rồi triển luôn”.
+**Chọn:** Giữ Newsreader + Space Grotesk, không thêm dependency/build. Áp token giấy `#F4F1EA`, mực `#141A18`, đỏ `#C0392B`, xanh `#1F5C4A`, hổ phách `#8A6414` (landing) / `#6F4F0D` (app), đường kẻ `#D8D2C2`; đỏ chỉ dùng cho CTA/đánh dấu/sửa bài. Landing dựng hero như phiếu thi, bảng đáp án 100 ô làm signature, rail 20 ngày; app đổi shell/route/sheet theo cùng token.
+**Loại:** Đổi nhận diện sang hướng khác (dashboard tối, mono); viết lại nội dung/feature; thêm font mới.
+**Lý do:** Tăng nhận diện và tính “sổ ôn” nhưng giữ nguyên dữ liệu, id, khóa localStorage và hành vi tính năng — rủi ro thấp, không phá tiến độ người dùng.
+**Hệ quả:** CSS landing tăng 23,494 → 31,735 B; ảnh/OG chụp lại; copy “Đáp án tham khảo” thống nhất hai nơi; 7 needsReview vẫn là cờ, không thành nhóm thứ tư.
+**Kiểm chứng:** `verify.sh` exit 0; LHCI 3 run Perf 0.99 / A11y/BP/SEO 1, LCP median 1,955 ms, CLS 0; ảnh after-ui-v2 14 ảnh không overflow/console error.
+**Ảnh hưởng:** T-UI-01..07, README, PROJECT_STATE, CONTENT_MAP.
+
+## 2026-10-25 — Chip lọc app wrap thay vì cuộn ngang
+
+**Bối cảnh:** Ảnh mobile 390 cho thấy hàng chip cuộn ngang chỉ lộ ~3.5 chip; người dùng khó thấy bộ lọc còn lại và trông như bị cắt mép.
+**Chọn:** `.chips` dùng `flex-wrap: wrap` ở mọi width; bỏ overflow-x/scrollbar và media rule ≥640.
+**Loại:** Giữ cuộn ngang + fade mép; thu nhỏ chip.
+**Lý do:** Tất cả bộ lọc hiện đủ trong 2–3 hàng, target vẫn ≥44px, không thêm JS; rõ ràng hơn trên màn hẹp.
+**Hệ quả:** Hàng lọc cao hơn một chút trên mobile; desktop không đổi đáng kể.
+**Kiểm chứng:** Ảnh app-library/check 390 trong `.memory/visual_ledger/after-ui-v2/`; Chromium audit không overflow.
+**Ảnh hưởng:** T-UI-04, T-UI-06.
+
+## 2026-10-25 — PWA cache `gdct1-v5`, activate chỉ xoá cache `gdct1-`
+
+**Bối cảnh:** UI v2 đổi CSS/JS/markup nên cần bump cache; bản cũ xoá mọi cache ngoài `CACHE`, có thể xoá cache không liên quan trên cùng origin.
+**Chọn:** Bump `gdct1-v5`; `activate` chỉ xoá key bắt đầu `gdct1-` và khác `CACHE`.
+**Loại:** Giữ v4 (người dùng thấy UI cũ); xoá toàn bộ cache origin.
+**Lý do:** Tránh phục vụ asset cũ và không đụng cache của landing/probe khác; migration kiểm bằng profile sạch.
+**Kiểm chứng:** Chrome 155 — `gdct1-v4` bị xoá, `gdct1-v5` 34 entry, cache `landing-probe` còn; offline `/app/#/library` render 100 dòng, 0 console error. `check-data` assert `'gdct1-v5'`.
+**Ảnh hưởng:** T-UI-05, T-PWA-01, README.

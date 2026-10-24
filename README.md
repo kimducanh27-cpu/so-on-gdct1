@@ -77,7 +77,7 @@ gdct1-002,0,""
 - Khóa `localStorage`: **`so-on-gdct1.v1`** (tiến độ, lịch, chuỗi, cài đặt, đáp án tự nhập).
 - **Cài đặt → Sao lưu tiến độ** xuất JSON; nhập lại bằng nút chọn tệp trong cùng mục.
 - **Xoá tiến độ** chỉ xoá tiến độ/chuỗi, giữ đáp án đã nhập.
-- PWA: manifest ở `/app/` với `id: "../"`, `start_url: "./#/today"`, `scope: "./"`; `app/sw.js` cache shell + dữ liệu + font, hiện là `gdct1-v4`.
+- PWA: manifest ở `/app/` với `id: "../"`, `start_url: "./#/today"`, `scope: "./"`; `app/sw.js` cache shell + dữ liệu + font, hiện là `gdct1-v5`. Khi kích hoạt, app chỉ dọn cache cùng tiền tố `gdct1-` để không đụng cache khác trên origin.
 - `sw.js` ở root là kill-switch một lần cho SW cũ scope `/so-on-gdct1/`: xoá cache `gdct1-v1..v3` và tự unregister, không có fetch handler.
 
 ## Kiểm tra trước khi phát hành
@@ -121,7 +121,7 @@ Cloudflare Pages/Netlify: build command để trống, output directory là root
 
 ## Cache và rollback
 
-- Sửa app shell, dữ liệu, manifest hoặc font app → tăng `CACHE` trong `app/sw.js` (`gdct1-v4` → `gdct1-v5`…). Sửa riêng landing không cần đổi SW.
+- Sửa app shell, dữ liệu, manifest hoặc font app → tăng `CACHE` trong `app/sw.js` (`gdct1-v5` → `gdct1-v6`…). Sửa riêng landing không cần đổi SW.
 - Không xoá root `sw.js`; người đã cài bản cũ cần file này để gỡ SW/cache cũ.
 - Rollback bằng commit mới: `git revert <commit-xấu>` rồi phát hành lại. Không force-push, không sửa lịch sử đã công khai.
 - Nếu rollback làm đổi app shell, tăng cache trước khi phát hành lại để client không giữ bản lỗi.

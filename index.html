@@ -16,12 +16,12 @@
   <meta property="og:image:type" content="image/png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="Sổ Ôn GDCT1: màn hình Hôm nay Ngày 01/20 cạnh dòng chữ “20 ngày, 100 câu hỏi, một cuốn sổ.”">
+  <meta property="og:image:alt" content="Sổ Ôn GDCT1: bảng 100 ô đáp án cạnh dòng chữ “20 ngày, 100 câu hỏi, một cuốn sổ.”">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Sổ Ôn GDCT1 — 20 ngày, 100 câu hỏi, một cuốn sổ.">
   <meta name="twitter:description" content="100 câu từ 70 ảnh đề, lịch 20 ngày tới 12.11.2026, ôn ngắt quãng, chạy offline, không tài khoản.">
   <meta name="twitter:image" content="https://kimducanh27-cpu.github.io/so-on-gdct1/assets/og-cover.png">
-  <meta name="twitter:image:alt" content="Sổ Ôn GDCT1: màn hình Hôm nay Ngày 01/20 cạnh dòng chữ “20 ngày, 100 câu hỏi, một cuốn sổ.”">
+  <meta name="twitter:image:alt" content="Sổ Ôn GDCT1: bảng 100 ô đáp án cạnh dòng chữ “20 ngày, 100 câu hỏi, một cuốn sổ.”">
   <meta name="color-scheme" content="light">
   <meta name="theme-color" content="#F4F1EA">
   <link rel="icon" href="./app/icons/favicon.svg" type="image/svg+xml">
@@ -34,6 +34,13 @@
 </head>
 <body>
   <a class="skip-link" href="#main">Bỏ qua điều hướng, vào nội dung</a>
+
+  <div class="form-strip">
+    <div class="shell form-strip-inner">
+      <span class="form-strip-label"><span class="form-strip-long">Phiếu ôn tập <span aria-hidden="true">·</span> </span>GDCT1</span>
+      <span class="form-strip-meta"><span class="form-strip-optional">100 câu</span><span class="form-strip-optional">6 nhóm</span><span>Hạn 12.11.2026</span></span>
+    </div>
+  </div>
 
   <header class="site-header">
     <div class="shell header-inner">
@@ -48,7 +55,7 @@
         <a href="#trong-so">Trong sổ</a>
         <a href="#hoi-dap">Hỏi đáp</a>
       </nav>
-      <a class="btn btn-small header-cta" href="./app/#/today">Mở sổ ôn
+      <a class="btn btn-small btn-primary header-cta" href="./app/#/today">Mở sổ ôn
         <svg class="arrow" width="16" height="16" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M4 10h11M11 5l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </a>
     </div>
@@ -58,11 +65,25 @@
     <section class="hero" aria-labelledby="hero-title">
       <div class="shell hero-grid">
         <div class="hero-copy">
-          <p class="eyebrow hero-eyebrow">Ôn thi GDCT1 <span aria-hidden="true">·</span> 20 ngày tới 12.11.2026</p>
+          <dl class="exam-meta">
+            <div class="exam-field">
+              <dt>Môn</dt>
+              <dd>GDCT1</dd>
+            </div>
+            <div class="exam-field">
+              <dt>Hình thức</dt>
+              <dd>Trắc nghiệm <span aria-hidden="true">·</span> 100 câu</dd>
+            </div>
+            <div class="exam-field">
+              <dt>Hạn ôn</dt>
+              <dd>12.11.2026</dd>
+            </div>
+          </dl>
+
           <h1 class="hero-title" id="hero-title">
             <span class="line">20 ngày,</span>
             <span class="line">100 câu hỏi,</span>
-            <span class="line hero-accent">một cuốn sổ.</span>
+            <span class="line hero-accent">một cuốn <span class="pen-circle">sổ</span>.</span>
           </h1>
           <p class="hero-lede">Một phiên vừa sức mỗi ngày: câu mới, câu đến hạn và chỗ chốt đáp án. Chạy ngay trên trình duyệt, không tài khoản, không backend.</p>
           <div class="hero-actions">
@@ -76,20 +97,50 @@
           <p class="hero-meta">Không đăng ký <span aria-hidden="true">·</span> Chạy offline sau lần đầu <span aria-hidden="true">·</span> Dữ liệu trên máy bạn</p>
         </div>
 
-        <figure class="hero-figure">
-          <div class="hero-shot">
-            <img src="./assets/landing/today-390.webp" width="390" height="844" alt="Màn hình Hôm nay của Sổ Ôn GDCT1: Ngày 01/20, chuỗi 0 ngày, 0/100 câu và nút Bắt đầu phiên 1." fetchpriority="high" decoding="async">
+        <figure class="sheet-card" aria-labelledby="sheet-title">
+          <div class="sheet-head">
+            <p class="sheet-kicker">Bảng đáp án</p>
+            <p class="sheet-code">GDCT1 <span aria-hidden="true">·</span> 100 câu</p>
           </div>
-          <div class="day-rail" aria-hidden="true">
-            <span class="tick is-new is-today"></span>
-            <span class="tick is-new"></span><span class="tick is-new"></span><span class="tick is-new"></span><span class="tick is-new"></span><span class="tick is-new"></span><span class="tick is-new"></span><span class="tick is-new"></span><span class="tick is-new"></span><span class="tick is-new"></span><span class="tick is-new"></span><span class="tick is-new"></span>
-            <span class="tick is-review"></span><span class="tick is-review"></span><span class="tick is-review"></span><span class="tick is-review"></span><span class="tick is-review"></span><span class="tick is-review"></span><span class="tick is-review"></span><span class="tick is-review"></span>
+          <p class="sheet-title" id="sheet-title">Mỗi ô là một câu, xếp theo đúng thứ tự trong sổ.</p>
+
+          <div class="sheet-blocks" aria-hidden="true">
+            <div class="sheet-block">
+              <span class="bubble is-r">001</span><span class="bubble is-r">002</span><span class="bubble is-r">003</span><span class="bubble is-r">004</span><span class="bubble is-r">005</span><span class="bubble is-v">006</span><span class="bubble is-r">007</span><span class="bubble is-v">008</span><span class="bubble is-r">009</span><span class="bubble is-r">010</span>
+              <span class="bubble is-v">011</span><span class="bubble is-r">012</span><span class="bubble is-r">013</span><span class="bubble is-r">014</span><span class="bubble is-r">015</span><span class="bubble is-v">016</span><span class="bubble is-r">017</span><span class="bubble is-r">018</span><span class="bubble is-r">019</span><span class="bubble is-r">020</span>
+              <span class="bubble is-r is-f">021</span><span class="bubble is-r">022</span><span class="bubble is-r">023</span><span class="bubble is-r">024</span><span class="bubble is-r">025</span><span class="bubble is-r">026</span><span class="bubble is-v is-f">027</span><span class="bubble is-v">028</span><span class="bubble is-r">029</span><span class="bubble is-r">030</span>
+              <span class="bubble is-r">031</span><span class="bubble is-r">032</span><span class="bubble is-r">033</span><span class="bubble is-r">034</span><span class="bubble is-r">035</span><span class="bubble is-r">036</span><span class="bubble is-r">037</span><span class="bubble is-r">038</span><span class="bubble is-r">039</span><span class="bubble is-r">040</span>
+              <span class="bubble is-v">041</span><span class="bubble is-r">042</span><span class="bubble is-r">043</span><span class="bubble is-r">044</span><span class="bubble is-r">045</span><span class="bubble is-r">046</span><span class="bubble is-r is-f">047</span><span class="bubble is-v">048</span><span class="bubble is-v">049</span><span class="bubble is-r">050</span>
+            </div>
+            <div class="sheet-block">
+              <span class="bubble is-r">051</span><span class="bubble is-r">052</span><span class="bubble is-r">053</span><span class="bubble is-v">054</span><span class="bubble is-v">055</span><span class="bubble is-v">056</span><span class="bubble is-v">057</span><span class="bubble is-v">058</span><span class="bubble is-r">059</span><span class="bubble is-v">060</span>
+              <span class="bubble is-v">061</span><span class="bubble is-v">062</span><span class="bubble is-v">063</span><span class="bubble is-v is-f">064</span><span class="bubble is-v">065</span><span class="bubble is-v">066</span><span class="bubble is-r">067</span><span class="bubble is-v">068</span><span class="bubble is-v">069</span><span class="bubble is-v">070</span>
+              <span class="bubble is-v">071</span><span class="bubble is-v">072</span><span class="bubble is-v">073</span><span class="bubble is-r">074</span><span class="bubble is-v">075</span><span class="bubble is-r">076</span><span class="bubble is-r">077</span><span class="bubble is-v">078</span><span class="bubble is-v">079</span><span class="bubble is-v">080</span>
+              <span class="bubble is-v">081</span><span class="bubble is-v">082</span><span class="bubble is-r">083</span><span class="bubble is-v">084</span><span class="bubble is-v">085</span><span class="bubble is-r is-f">086</span><span class="bubble is-v">087</span><span class="bubble is-v">088</span><span class="bubble is-r">089</span><span class="bubble is-v">090</span>
+              <span class="bubble is-v">091</span><span class="bubble is-r">092</span><span class="bubble is-v">093</span><span class="bubble is-r">094</span><span class="bubble is-v">095</span><span class="bubble is-v">096</span><span class="bubble is-r is-f">097</span><span class="bubble is-r is-f">098</span><span class="bubble is-v">099</span><span class="bubble is-v">100</span>
+            </div>
           </div>
-          <figcaption class="rail-caption">
-            <span class="rail-today">01 <span aria-hidden="true">·</span> hôm nay</span>
-            <span class="rail-legend">12 ngày học mới <span aria-hidden="true">·</span> 8 ngày ôn</span>
-            <span class="rail-end">20 <span aria-hidden="true">·</span> 12.11.2026</span>
-          </figcaption>
+
+          <ul class="sheet-legend">
+            <li><span class="swatch is-v" aria-hidden="true"></span><span><strong>44</strong> đối chiếu giáo trình</span></li>
+            <li><span class="swatch is-r" aria-hidden="true"></span><span><strong>56</strong> bản tham khảo</span></li>
+            <li><span class="swatch is-f" aria-hidden="true"></span><span><strong>7</strong> cần kiểm tra</span></li>
+          </ul>
+          <p class="sheet-note">7 cờ nằm trong 44 + 56 — không phải nhóm thứ tư.</p>
+
+          <div class="sheet-days">
+            <p class="sheet-days-label"><span>Lịch 20 ngày</span><span>01 <span aria-hidden="true">→</span> 20</span></p>
+            <div class="day-rail" aria-hidden="true">
+              <span class="tick is-new is-today"></span>
+              <span class="tick is-new"></span><span class="tick is-new"></span><span class="tick is-new"></span><span class="tick is-new"></span><span class="tick is-new"></span><span class="tick is-new"></span><span class="tick is-new"></span><span class="tick is-new"></span><span class="tick is-new"></span><span class="tick is-new"></span><span class="tick is-new"></span>
+              <span class="tick is-review"></span><span class="tick is-review"></span><span class="tick is-review"></span><span class="tick is-review"></span><span class="tick is-review"></span><span class="tick is-review"></span><span class="tick is-review"></span><span class="tick is-review"></span>
+            </div>
+            <div class="rail-caption">
+              <span class="rail-today">01 <span aria-hidden="true">·</span> hôm nay</span>
+              <span class="rail-legend">12 ngày học mới <span aria-hidden="true">·</span> 8 ngày ôn</span>
+              <span class="rail-end">20 <span aria-hidden="true">·</span> 12.11.2026</span>
+            </div>
+          </div>
         </figure>
       </div>
     </section>
@@ -149,7 +200,7 @@
               <dd class="ledger-note">Đã rà lại với giáo trình trước khi đưa vào sổ.</dd>
             </div>
             <div class="ledger-item">
-              <dt class="ledger-label">Bản tham khảo</dt>
+              <dt class="ledger-label">Đáp án tham khảo</dt>
               <dd class="ledger-value">56</dd>
               <dd class="ledger-note">Tổng hợp từ đề gốc; đọc lại phần giải thích khi ôn.</dd>
             </div>
@@ -159,7 +210,7 @@
               <dd class="ledger-note">Đang được đánh dấu để bạn tự xác nhận, không mặc định là đúng.</dd>
             </div>
           </dl>
-          <p class="answers-note">Bạn có thể xem, sửa và xác nhận từng đáp án trong trang Kiểm đáp án. Mọi thay đổi lưu trên máy.</p>
+          <p class="answers-note"><strong>7 cờ nằm trong 44 + 56 — không phải nhóm thứ tư.</strong> Bạn có thể xem, sửa và xác nhận từng đáp án trong trang Kiểm đáp án. Mọi thay đổi lưu trên máy.</p>
         </div>
       </div>
     </section>
@@ -202,34 +253,41 @@
           <div class="preview-grid">
             <figure class="preview">
               <div class="preview-frame">
+                <div class="preview-bar">
+                  <span class="preview-name">Hôm nay</span>
+                  <span class="preview-size">390 <span aria-hidden="true">×</span> 844</span>
+                </div>
                 <img src="./assets/landing/today-390.webp" width="390" height="844" alt="Màn hình Hôm nay: Ngày 01/20, chuỗi 0 ngày, 0/100 câu, phiên học chính 9 câu và các lối tắt." loading="lazy" decoding="async">
               </div>
               <figcaption>
-                <span class="preview-name">Hôm nay</span>
                 <span class="preview-desc">Chuỗi ngày, mục tiêu và phiên học chính nằm cùng một chỗ.</span>
               </figcaption>
             </figure>
             <figure class="preview">
               <div class="preview-frame">
-                <img src="./assets/landing/library-390.webp" width="390" height="844" alt="Danh sách 100 câu hỏi, mỗi câu có nhãn Bản tham khảo; bộ lọc Tất cả, Chưa học, Đến hạn, Câu sai." loading="lazy" decoding="async">
+                <div class="preview-bar">
+                  <span class="preview-name">Ôn theo câu</span>
+                  <span class="preview-size">390 <span aria-hidden="true">×</span> 844</span>
+                </div>
+                <img src="./assets/landing/library-390.webp" width="390" height="844" alt="Danh sách 100 câu hỏi, mỗi câu có nhãn Đáp án tham khảo; bộ lọc Tất cả, Chưa học, Đến hạn, Câu sai." loading="lazy" decoding="async">
               </div>
               <figcaption>
-                <span class="preview-name">Ôn theo câu</span>
                 <span class="preview-desc">Tìm theo nội dung hoặc phương án; lọc câu chưa học, đến hạn, câu sai.</span>
               </figcaption>
             </figure>
             <figure class="preview">
               <div class="preview-frame">
+                <div class="preview-bar">
+                  <span class="preview-name">Kiểm đáp án</span>
+                  <span class="preview-size">390 <span aria-hidden="true">×</span> 844</span>
+                </div>
                 <img src="./assets/landing/check-390.webp" width="390" height="844" alt="Trang Kiểm đáp án: 44 câu đã đối chiếu giáo trình, 56 câu tham khảo, bộ lọc Kiểm tra 7." loading="lazy" decoding="async">
               </div>
               <figcaption>
-                <span class="preview-name">Kiểm đáp án</span>
                 <span class="preview-desc">44 câu đối chiếu, 56 câu tham khảo, 7 câu cần kiểm tra.</span>
               </figcaption>
             </figure>
           </div>
-
-
         </div>
       </div>
     </section>
@@ -261,7 +319,7 @@
             </details>
             <details class="faq-item">
               <summary>
-                <span class="faq-q">Vì sao có câu ghi “Bản tham khảo”?</span>
+                <span class="faq-q">Vì sao có câu ghi “Đáp án tham khảo”?</span>
                 <span class="faq-icon" aria-hidden="true"></span>
               </summary>
               <div class="faq-a">
@@ -294,17 +352,28 @@
     </section>
 
     <section class="cta-final" aria-labelledby="cta-title">
-      <div class="shell cta-inner">
-        <div class="cta-copy">
-          <p class="eyebrow">Bắt đầu</p>
-          <h2 id="cta-title">Ngày 01 bắt đầu từ <em>một cú bấm.</em></h2>
-          <p class="cta-lede">Mở sổ, nhận lịch 20 ngày và phiên đầu tiên. Không cần đăng ký.</p>
-        </div>
-        <div class="cta-actions">
-          <a class="btn btn-primary btn-large" href="./app/#/today">Mở sổ ôn ngay
-            <svg class="arrow" width="18" height="18" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M4 10h11M11 5l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </a>
-          <p class="cta-meta">24.10 – 12.11.2026 <span aria-hidden="true">·</span> 100 câu <span aria-hidden="true">·</span> 6 nhóm</p>
+      <div class="shell">
+        <div class="cta-slip">
+          <div class="cta-slip-head" aria-hidden="true">
+            <span>Phiếu bắt đầu</span>
+            <span>Ngày 01 / 20</span>
+          </div>
+          <div class="cta-inner">
+            <div class="cta-copy">
+              <h2 id="cta-title">Ngày 01 bắt đầu từ <em>một cú bấm.</em></h2>
+              <p class="cta-lede">Mở sổ, nhận lịch 20 ngày và phiên đầu tiên. Không cần đăng ký.</p>
+            </div>
+            <div class="cta-actions">
+              <a class="btn btn-primary btn-large" href="./app/#/today">Mở sổ ôn ngay
+                <svg class="arrow" width="18" height="18" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M4 10h11M11 5l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </a>
+              <p class="cta-meta">24.10 – 12.11.2026 <span aria-hidden="true">·</span> 100 câu <span aria-hidden="true">·</span> 6 nhóm</p>
+            </div>
+          </div>
+          <div class="cta-slip-foot" aria-hidden="true">
+            <span>Không cần đăng ký</span>
+            <span>Chạy offline</span>
+          </div>
         </div>
       </div>
     </section>

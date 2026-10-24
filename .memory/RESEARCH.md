@@ -25,7 +25,7 @@ Ngày: 2026-10-24 · Phạm vi: landing mới + chuyển app sang `/app/` · Ng�
 
 1. **Kill-switch ở scope gốc** + tự xoá cache legacy; không dựa vào `unregister()` để dừng ngay.
 2. **Manifest `id: "../"`** để giữ định danh cũ; nếu trình duyệt không hỗ trợ, ghi nhận cài lại thay vì tuyên bố giữ được.
-3. **Cache mới `gdct1-v4`** + dọn cache khác trong `activate`, vì cache là origin-global và tên cũ `gdct1-v3` đang chứa entry của app ở root.
+3. **Cache mới `gdct1-v4`** (sau đó bump `gdct1-v5` ở UI v2) + dọn cache khác trong `activate`, vì cache là origin-global và tên cũ `gdct1-v3` đang chứa entry của app ở root.
 
 ## 3 điều không áp dụng
 
@@ -45,3 +45,11 @@ Ngày: 2026-10-24 · Phạm vi: landing mới + chuyển app sang `/app/` · Ng�
 - **App SW:** scope `/so-on-gdct1/app/`, cache `gdct1-v4` 34 entry, controller là `app/sw.js`; reload khi server tắt vẫn render app (offline fallback).
 - **Manifest:** `id: "../"` resolve thành `/so-on-gdct1/`; `start_url` resolve thành `/so-on-gdct1/app/#/today`.
 - **Chưa kiểm chứng:** hành vi “không tạo bản cài trùng” trên Chrome có bản cài cũ (cần cài PWA thật); Safari/Firefox với `id` limited availability.
+
+## Kết quả kiểm chứng UI v2 (2026-10-25)
+
+- **Verify:** `bash scripts/verify.sh` exit 0 sau thay đổi UI — html-validate 0 error; check-data 45/45 (SW `gdct1-v5`); contrast 15/15; secret/file khóa sạch; HTTP 200/404 đúng; linkinator 18 link 0 chết; pa11y 2/2 URL 0 error; Chromium CDP 5 viewport + 8 route + keyboard 24 bước + FAQ + reduced motion + 0 third-party; Firefox BiDi + Marionette pass; WebKit BLOCKED.
+- **Cache v4 → v5 (Chrome 155, profile sạch):** trước khi mở app tạo `gdct1-v4` (1 entry) + `landing-probe`; sau activate còn `['landing-probe','gdct1-v5']`; v4 bị xoá, v5 34 entry; offline `/app/#/library` render 100 dòng, 0 console error. Xác nhận logic chỉ xoá cache tiền tố `gdct1-`.
+- **Lighthouse 12.1.0 / LHCI 0.14.0, mobile, 3 run local:** Performance 0.99 ×3; A11y/BP/SEO 1; LCP 1,955.99 / 1,953.56 / 1,955.03 ms; TBT 0; CLS 0; total 149,034 B. CSS landing 31,735 B, 4 font 88,372 B, OG 131,423 B, screenshot 24,790–40,928 B.
+- **Thị giác:** 14 ảnh `.memory/visual_ledger/after-ui-v2/` (landing 320/390/768/1280, 404-390, 7 route app 390 + today 1280) — không overflow, console 0 error; chip lọc wrap đủ trên mobile; 404 footer không bị cắt ở 900px.
+- **Không đổi:** id câu, nội dung đáp án, khóa `so-on-gdct1.v1`, route app, tính năng. Chỉ CSS/markup/copy trình bày và cache SW.

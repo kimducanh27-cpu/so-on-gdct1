@@ -346,12 +346,13 @@
   }
 
   function renderNav(route) {
+    var active = ['study', 'done', 'exam', 'exam-setup'].indexOf(route) !== -1 ? 'today' : route;
     $$('.tabbar a').forEach(function (a) {
-      var on = a.getAttribute('data-route') === route;
+      var on = a.getAttribute('data-route') === active;
       if (on) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
     });
     $$('.nav-desktop a').forEach(function (a) {
-      var on = a.getAttribute('data-route') === route;
+      var on = a.getAttribute('data-route') === active;
       if (on) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
     });
     var info = streakInfo();
@@ -415,7 +416,7 @@
     }
     html += '<button class="btn" data-act="exam-setup">Thi thử</button>';
     html += '</div>';
-    html += '<div class="hero-mark" aria-hidden="true">20<br>NGÀY<br>GDCT1</div>';
+    html += '<div class="hero-mark" aria-hidden="true">' + total + '<br>NGÀY<br>GDCT1</div>';
     html += '</section>';
 
     if (t <= DEADLINE && !met && reminderDue()) {
@@ -452,6 +453,7 @@
     html += '<button class="quick" data-act="start-mode" data-mode="wrong"><span class="q-k">Câu sai</span><span class="q-v">' + wrong + '</span><span class="q-d">Luyện lại ngay</span></button>';
     html += '<button class="quick" data-act="start-mode" data-mode="flagged"><span class="q-k">Đánh dấu</span><span class="q-v">' + flagged + '</span><span class="q-d">Xem lại sau</span></button>';
     html += '<button class="quick" data-act="go-check"><span class="q-k">Chưa có đáp án</span><span class="q-v">' + noKey + '</span><span class="q-d">Tra và xác nhận</span></button>';
+    html += '</div>';
     html += '</div>';
     html += '</div>';
 

@@ -155,3 +155,52 @@ Tổng: 13 task (6 M, 7 S). Nền = 3/13 = 23% (< 25%). Không task XL, không U
 - **DoD:** live `/` + `/app/` 200; CTA; redirect legacy; SW cũ được gỡ; Lighthouse live; tag/commit rollback.
 - **Bằng chứng:** URL live, commit hash, screenshot, LHCI.
 - **Kết quả 2026-10-24:** Q1 = cho phép push + deploy từ `main`, giữ nhánh `landing-page`. Fast-forward `main` → `b3f89a1`, push `e4cac8c..b3f89a1`, Pages build từ `main` `/`. Live https://kimducanh27-cpu.github.io/so-on-gdct1/ trả 200 với landing mới (title “100 câu, 20 ngày tới 12.11.2026”, 1 h1, CTA `./app/#/today`); `/app/` 200 + `noindex`; `assets/og-cover.png` 200 (128,061 B, `image/png`); root `sw.js` kill-switch, `app/sw.js` `gdct1-v4`, manifest `id: "../"`; 404 tùy biến 404 + đúng nội dung; robots + sitemap 200. Redirect legacy từ tải trang mới: `#/check|today|library|exam-setup|stats` → `/app/#/...`, app render 418–25,082 ký tự. Chromium live audit pass toàn bộ (5 viewport, 8 route, keyboard 24 bước, FAQ, reduced motion, 0 third-party, 0 console error); Firefox BiDi + Marionette pass; pa11y 2/2 URL 0 error; LHCI live 3 run: Perf 1.0/0.99/1.0, A11y 1, BP 1, SEO 1, LCP median 1,379 ms, TBT 0, CLS 0, TTFB 25 ms, 122,129 B. Rollback: `git revert b3f89a1` + push (không force). Chưa kiểm chứng: cài PWA thật/gỡ bản cài cũ, WebKit/iOS.
+
+---
+
+## Phase 2 — UI rework “Phiếu thi & bút đỏ” (2026-10-25)
+
+| ID | Task | Size | U | Phụ thuộc | Mốc | Trạng thái |
+|---|---|---|---|---|---|---|
+| T-UI-01 | Audit UI + before shots + UI_REVIEW | S | U1 | — | M1 | done-verified |
+| T-UI-02 | Landing: token, bảng 100 ô, hero, section | M | U1 | T-UI-01 | M2 | done-verified |
+| T-UI-03 | App shell + Hôm nay + Học | M | U2 | T-UI-01 | M2 | done-verified |
+| T-UI-04 | App: Thư viện, Kiểm đáp án, Sổ, Cài đặt, Thi thử | M | U1 | T-UI-03 | M3 | done-verified |
+| T-UI-05 | Ảnh app, OG, 404, SW cache v5 | M | U2 | T-UI-04 | M3 | done-verified |
+| T-UI-06 | QA, before/after, tài liệu | S | U2 | T-UI-05 | M4 | done-verified |
+| T-UI-07 | Deploy production + smoke live | S | U2 | T-UI-06 | M5 | doing |
+
+### T-UI-01 — Audit UI + bằng chứng trước
+- **DoD:** `bash scripts/verify.sh` xanh trước thay đổi; 13 ảnh before (landing 320/390/768/1280; app today 390/1280; library/check/stats/settings/exam-setup/study/review-sheet 390); F-UI-01..10 + design_revision ghi ở `.memory/UI_REVIEW.md`; 0 console error.
+- **Kết quả 2026-10-25:** `verify.sh` exit 0 (Chromium + Firefox + pa11y + LHCI gate). Before shots ở `.memory/visual_ledger/before-ui-v2/`.
+
+### T-UI-02 — Landing
+- **Mục tiêu:** landing đọc như phiếu ôn, giữ nguyên nội dung và CTA.
+- **DoD:** form strip; hero + bảng 100 ô (đúng 44/56/7, 7 cờ phủ trong 44+56); rail 20 ngày; 4 giá trị; bảng đáp án có chú thích “không phải nhóm thứ tư”; 3 bước; preview ảnh thật; FAQ; CTA cuối; 1 h1; không overflow 320–1280; CTA đúng text/href; html-validate 0 lỗi; contrast pass.
+- **Bằng chứng:** 5 viewport after + pa11y + contrast.
+- **Kết quả 2026-10-25:** landing UI v2 render đúng; `verify.sh` pass (html-validate 0, pa11y 0, contrast 15/15); ảnh after 320/390/768/1280 trong `.memory/visual_ledger/after-ui-v2/`; CTA `Mở sổ ôn ngay` → `./app/#/today`.
+
+### T-UI-03 — App shell, Hôm nay, Học
+- **DoD:** strip phiếu + topbar/tabbar mới; Today và Study theo phiếu; focus ring ≥2px; không đổi route/dữ liệu; 8 route render; 0 console error; 320/390/1280 không overflow.
+- **Bằng chứng:** after shots, Chromium/Firefox gate.
+- **Kết quả 2026-10-25:** shell + Today/Study mới; rail 20 ngày đặt đúng cấu trúc; tab active map `study/done/exam/exam-setup` → `today`; 8 route pass Chromium + Firefox, 0 console error.
+
+### T-UI-04 — Các route còn lại
+- **DoD:** Library/Check/Stats/Settings/Exam-setup + overlay/sheet/empty/notice dùng token mới; badge và nhãn đọc được; không overflow.
+- **Bằng chứng:** after shots 390/1280.
+- **Kết quả 2026-10-25:** 5 route còn lại + sheet/empty/notice theo token; chip lọc wrap mọi width; sheet footer sticky; stats lịch 10 cột; ảnh app 390 trong `.memory/visual_ledger/after-ui-v2/`.
+
+### T-UI-05 — Assets, OG, 404, cache
+- **DoD:** 4 ảnh app mới (3×390×844 + 1280×800, ≤150KB); OG 1200×630 ≤300KB từ UI mới; 404 style mới; `app/sw.js` `gdct1-v5` + `check-data` cập nhật; offline reload `/app/` pass; cache cũ bị dọn, không đụng cache landing.
+- **Bằng chứng:** kích thước file, CDP cache keys, screenshot offline.
+- **Kết quả 2026-10-25:** ảnh 24,790 / 36,664 / 34,652 / 40,928 B; OG 131,423 B; 404 flex footer; `gdct1-v5` + `check-data` assert; migration profile sạch: v4 bị xoá, `landing-probe` giữ, v5 34 entry; offline `/app/#/library` render 100 dòng.
+
+### T-UI-06 — QA + tài liệu
+- **DoD:** `verify.sh` xanh; LHCI mobile ≥ budget; after shots đủ bộ; README/.memory/PROJECT_STATE/DECISIONS/CONTENT_MAP/.plan cập nhật; diff không TODO/console.log.
+- **Bằng chứng:** log gate + LHCI 3 run + before/after.
+- **Kết quả 2026-10-25:** `verify.sh` exit 0; LHCI 3 run Perf 0.99, A11y/BP/SEO 1, LCP median 1,955.03 ms, CLS 0, total 149,034 B; after shots 14 ảnh; README + PROJECT_STATE + DECISIONS + RESEARCH + CONTENT_MAP + UI_REVIEW + TASKS/PLAN cập nhật; diff sạch TODO/console.log.
+
+### T-UI-07 — Deploy
+- **DoR:** T-UI-06 xanh + người dùng đã nói “triển luôn”.
+- **DoD:** commit + push `main`; live `/`, `/app/`, ảnh, SW v5 trả 200; redirect legacy; manifest giữ `id: "../"`; smoke Chromium + LHCI live; ghi commit rollback.
+- **Bằng chứng:** URL live, commit hash, log smoke.

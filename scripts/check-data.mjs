@@ -65,7 +65,7 @@ check(manifest.start_url === './#/today', 'manifest start_url', manifest.start_u
 check(manifest.scope === './', 'manifest scope', manifest.scope);
 
 const appSw = read('app/sw.js');
-check(appSw.includes("'gdct1-v4'"), 'app SW cache gdct1-v4');
+check(appSw.includes("'gdct1-v5'"), 'app SW cache gdct1-v5');
 
 const rootSw = read('sw.js');
 check(!/addEventListener\(\s*['"]fetch['"]/.test(rootSw), 'root SW không có fetch handler');

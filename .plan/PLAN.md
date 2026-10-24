@@ -135,3 +135,57 @@ Nhánh song song: `T-ASSET-01` (sau BASE-01) → LAND-03/PERF-01; `T-REDIR-01` s
 | Cross-browser 0.6 | T-QA-01: Chromium + Firefox; WebKit/iOS nếu có thiết bị, thiếu thì ghi `blocked`, không tuyên bố pass |
 | `.memory/*` + visual ledger cập nhật | T-QA-01, T-DOC-01 |
 | Commit sạch, message rõ | T-DOC-01, T-DEPLOY-01 |
+
+---
+
+# PHASE 2 — UI rework “Phiếu thi & bút đỏ” (2026-10-25)
+
+## Brief
+
+```yaml
+project:
+  name: "Sổ Ôn GDCT1 — UI rework"
+  type: product + marketing
+  mode: brownfield
+  locale: vi
+  goal: "Làm landing và app đọc như một phiếu ôn bị chấm bằng bút đỏ, vẫn giữ nguyên dữ liệu và hành vi."
+  audience: "Sinh viên ôn GDCT1 trên điện thoại, hạn 12.11.2026"
+  pages: ["/", "/app/#/today|study|done|library|check|stats|settings|exam-setup", "/404.html"]
+  brand:
+    colors: "giấy #F4F1EA, mực #141A18, đỏ #C0392B, xanh #1F5C4A, hổ phách #8A6414"
+    fonts: "Newsreader 400 + Space Grotesk (landing 4 woff2); app giữ bộ font hiện có"
+  integrations: ["none"]
+  deploy: github-pages
+  constraints:
+    - "không đổi route, localStorage so-on-gdct1.v1, id câu, đáp án, hành vi"
+    - "không thêm dependency/build/analytics"
+    - "giữ CTA 'Mở sổ ôn ngay' → ./app/#/today, .skip-link, .hero, #hoi-dap cho QA"
+```
+
+## Quyết định thiết kế
+
+- `design_revision 02`, hướng đã duyệt; chi tiết F-UI và refinement ở `.memory/UI_REVIEW.md`.
+- Landing: form strip + hero có **bảng 100 ô đáp án** (10×10, vạch chia 50) + rail 20 ngày; ảnh app thật chuyển về mục “Trong sổ”.
+- App: panel vuông, header phiếu, nhãn ≥11px, số tabular, đỏ chỉ dùng cho hành động/sửa bài.
+- Motion `subtle`; landing không animation tự chạy; reduced-motion tắt toàn bộ.
+- Ảnh app + OG + 404 + SW cache `gdct1-v5` là một phần của task, không phải việc phụ.
+
+## Task & thứ tự
+
+`T-UI-01` → `T-UI-02` → `T-UI-03` → `T-UI-04` → `T-UI-05` → `T-UI-06` → `T-UI-07`.
+
+| Task | Nội dung | Gate |
+|---|---|---|
+| T-UI-01 | Audit + before shots + UI_REVIEW | verify baseline xanh, 13 ảnh before |
+| T-UI-02 | Landing | 5 viewport, 1 h1, CTA, FAQ, contrast, HTML valid |
+| T-UI-03 | Shell/Today/Study | 8 route render, keyboard, no overflow |
+| T-UI-04 | 5 route còn lại + overlay | 390/1280, no overflow, contrast |
+| T-UI-05 | Assets, OG, 404, SW v5 | offline + cache migration, ảnh ≤ budget |
+| T-UI-06 | QA + docs + after shots | `verify.sh` xanh, LHCI budget, before/after |
+| T-UI-07 | Deploy + live smoke | live 200, SW v5, redirect, LHCI |
+
+**Ngoài phạm vi:** đổi nội dung đáp án, thêm tính năng, dark mode, analytics, backend, framework.
+
+**Rủi ro:** mất tương phản khi tăng mật độ đỏ; QA script phụ thuộc markup cũ; ảnh/OG lệch; SW phục vụ CSS cũ; layout 320px với bảng 10 cột. Giảm thiểu: giữ selector QA, đo contrast, chụp 5 viewport, bump cache + test offline.
+
+**Trạng thái 2026-10-25:** T-UI-01..06 done-verified; T-UI-07 đang triển khai. `verify.sh` exit 0 (gate đầy đủ); LHCI 3 run local: Perf 0.99, A11y/BP/SEO 1, LCP median 1,955.03 ms; 14 ảnh after; SW `gdct1-v5` migration + offline pass. Live vẫn là `b3f89a1` (UI v1) cho tới khi push xong.
