@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" fill="#F4F1EA"/>
+  <rect x="3.5" y="3.5" width="57" height="57" fill="none" stroke="#141A18" stroke-width="1.5"/>
+  <rect x="3.5" y="16" width="57" height="2" fill="#D24A2E"/>
+  <text x="32" y="43" text-anchor="middle" font-family="Georgia,serif" font-size="27" font-weight="700" fill="#141A18">G1</text>
+  <text x="32" y="55" text-anchor="middle" font-family="monospace" font-size="5" letter-spacing="1" fill="#D24A2E">SỔ ÔN</text>
+</svg>
