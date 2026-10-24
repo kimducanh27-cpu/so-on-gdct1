@@ -18,7 +18,7 @@ Plan: `.plan/PLAN.md` · Research: `.memory/RESEARCH.md` · Quyết định: `.m
 | T-A11Y-01 | WCAG 2.2 AA cho landing | S | U1 | T-LAND-03 | M3 | done-verified |
 | T-PERF-01 | Budget Lighthouse mobile | S | U2 | T-LAND-03, T-ASSET-01 | M3 | done-verified |
 | T-QA-01 | `verify.sh` + smoke toàn bộ | S | U2 | tất cả trừ DOC/DEPLOY | M3/M4 | done-verified |
-| T-DOC-01 | README, rollback, bàn giao | S | U1 | T-QA-01 | M4 | doing |
+| T-DOC-01 | README, rollback, bàn giao | S | U1 | T-QA-01 | M4 | done-verified |
 | T-DEPLOY-01 | Deploy Pages + smoke live | S | U2 | T-DOC-01 + Q1 | M5 | blocked |
 
 Tổng: 13 task (6 M, 7 S). Nền = 3/13 = 23% (< 25%). Không task XL, không U3.
@@ -146,6 +146,7 @@ Tổng: 13 task (6 M, 7 S). Nền = 3/13 = 23% (< 25%). Không task XL, không U
   - Chạy đúng README từ clone tạm → 200; link nội bộ 0 chết.
   - Commit local message nêu vì sao; **không push**.
 - **Bằng chứng:** clone tạm + server; linkinator; `git log`.
+- **Kết quả 2026-10-24:** commit local `f6f2ac5` (không push). Clone sạch đúng commit, `node scripts/serve.mjs` → 200 cho `/`, `/app/`, `/app/#/today`, CSS, data; linkinator nội bộ 18 link, 0 chết; `bash scripts/verify.sh` exit 0 trên cây làm việc.
 
 ### T-DEPLOY-01 — Deploy Pages + smoke live (blocked)
 - **Mục tiêu:** phát hành bản M4 lên GitHub Pages.

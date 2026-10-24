@@ -127,3 +127,13 @@
 **Lý do:** Đúng chỉ đạo và W8.
 **Hệ quả:** Khi duyệt plan, bắt đầu từ T-BASE-01; deploy chỉ sau M4 + Q1.
 **Ảnh hưởng:** Toàn bộ TASKS; T-DEPLOY-01.
+
+## 2026-10-24 — Marionette keyboard gate: bỏ probe, retry connect + handshake
+
+**Bối cảnh:** `firefox-keyboard.mjs` fail `ECONNREFUSED` 1/3 lần khi chạy ngay sau Firefox BiDi smoke; chạy đơn lẻ pass 3/3. Log cho thấy `waitForPort` kết nối thành công nhưng kết nối thật ngay sau đó bị từ chối.
+
+**Chọn:** Bỏ probe TCP riêng; gộp `connectMarionette` + `WebDriver:NewSession` vào `openSession()` retry 250 ms tới 20 s, đóng socket thì reject mọi request đang chờ.
+**Loại:** Retry ở lớp bash; tăng timeout; bỏ Firefox gate.
+**Lý do:** Probe và kết nối thật không nguyên tử — listener Marionette có thể vắng giữa hai lần trong lúc khởi động/khởi động lại. Retry có điều kiện giữ gate fail-closed nếu Marionette không lên, đồng thời không che lỗi app.
+**Kiểm chứng:** 5/5 cặp BiDi → Marionette pass sau sửa; `bash scripts/verify.sh` exit 0.
+**Ảnh hưởng:** T-QA-01, T-DOC-01.

@@ -1,6 +1,6 @@
 # PROJECT STATE
 
-Cập nhật: 2026-10-24 · Nhánh local `landing-page` · Nguồn gốc: repo `kimducanh27-cpu/so-on-gdct1` @ `e4cac8c` · T-DOC-01 đang hoàn tất, T-DEPLOY-01 chờ Q1.
+Cập nhật: 2026-10-24 · Nhánh local `landing-page`, commit `f6f2ac5` (chưa push) · Nguồn gốc: repo `kimducanh27-cpu/so-on-gdct1` @ `e4cac8c` · T-DOC-01 done-verified, T-DEPLOY-01 chờ Q1.
 
 ## Stack & môi trường
 
@@ -86,6 +86,13 @@ Route app: `app/#/today|study|done|library|check|stats|settings|exam-setup`; m�
 - Lưu ý: Firefox headless BiDi không cấp focus thật nên keyboard tách sang Marionette; app hash route bị pa11y coi là anchor thiếu (13 false positive) nên pa11y chỉ chạy landing + 404.
 - Sửa harness 2026-10-24: `firefox-keyboard.mjs` từng fail `ECONNREFUSED` 1/3 lần khi chạy ngay sau BiDi smoke. Nguyên nhân: probe TCP của `waitForPort` và kết nối thật không nguyên tử; listener Marionette có thể vắng giữa hai lần. Bỏ probe, gộp connect + `WebDriver:NewSession` vào `openSession()` retry 250 ms tới 20 s; đóng socket reject pending. Xác minh 5/5 cặp BiDi → Marionette pass.
 
+## Bàn giao (T-DOC-01) — done
+
+- README viết lại cho `/` + `/app/`, chạy từ root bằng `node scripts/serve.mjs` (bỏ `cd app`), QA, deploy Pages root, bump `gdct1-v4`, rollback bằng `git revert`, font, giới hạn.
+- Clone sạch tại commit `f6f2ac5`: `node scripts/serve.mjs` → 200 cho `/`, `/app/`, `/app/#/today`, CSS, data; linkinator nội bộ 18 link, 0 chết.
+- `bash scripts/verify.sh` exit 0 trên cây làm việc trước commit; commit chỉ chứa source + tài liệu.
+- Chưa push/deploy; T-DEPLOY-01 cần Q1.
+
 ## Redirect legacy (T-REDIR-01)
 
 - `assets/landing.js` (364 B, blocking trong head): hash `#/...` → `./app/` + hash, base-aware; `display-mode: standalone` vào `./app/#/today`; hash rỗng không redirect.
@@ -109,9 +116,9 @@ Route app: `app/#/today|study|done|library|check|stats|settings|exam-setup`; m�
 
 ## Vấn đề mở / nợ
 
-- Chưa commit/push/deploy; T-DEPLOY-01 chờ Q1.
+- Commit local `f6f2ac5`; chưa push/deploy; T-DEPLOY-01 chờ Q1.
 - 7 câu needsReview là backlog nội dung, ngoài phạm vi landing.
-- README đã viết lại ở T-DOC-01; đang chờ kiểm từ clone sạch và commit local.
+- README đã kiểm từ clone sạch; linkinator chỉ tính link nội bộ. Ảnh OG tuyệt đối hiện 404 trên bản live cũ, cần kiểm lại sau phát hành.
 - App pa11y có 13 false positive do hash route bị coi là anchor thiếu; phạm vi a11y là landing + 404, ghi trong README.
 - 404 hard-code base `/so-on-gdct1/`.
 - Chưa test PWA cài thật/standalone thật; WebKit/iOS chưa có thiết bị.
