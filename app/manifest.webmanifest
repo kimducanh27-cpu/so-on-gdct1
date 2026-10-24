@@ -4,6 +4,7 @@
   "description": "Ôn trắc nghiệm GDCT1 tới 12.11.2026: lịch ôn, chuỗi ngày học, nhắc học, đáp án do người học kiểm chứng. Chạy offline.",
   "lang": "vi",
   "dir": "ltr",
+  "id": "../",
   "start_url": "./#/today",
   "scope": "./",
   "display": "standalone",

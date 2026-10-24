@@ -1,59 +1,341 @@
 <!doctype html>
 <html lang="vi">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Sổ Ôn GDCT1 — Ôn trắc nghiệm tới 12.11</title>
-<meta name="description" content="Sổ ôn trắc nghiệm GDCT1: 70 ảnh đề, lịch ôn tới 12.11.2026, chuỗi ngày học, nhắc học và đáp án đối chiếu giáo trình, bạn chốt cuối. Chạy offline, không tài khoản.">
-<meta name="theme-color" content="#F4F1EA">
-<meta name="color-scheme" content="light">
-<link rel="manifest" href="manifest.webmanifest">
-<link rel="icon" href="icons/favicon.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="icons/icon-192.png">
-<link rel="stylesheet" href="assets/app.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sổ Ôn GDCT1 — 100 câu, 20 ngày tới 12.11.2026</title>
+  <meta name="description" content="Sổ ôn trắc nghiệm GDCT1 từ 70 ảnh đề: 100 câu, lịch 20 ngày tới 12.11.2026, ôn ngắt quãng, chạy offline, không tài khoản.">
+  <link rel="canonical" href="https://kimducanh27-cpu.github.io/so-on-gdct1/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Sổ Ôn GDCT1">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:url" content="https://kimducanh27-cpu.github.io/so-on-gdct1/">
+  <meta property="og:title" content="Sổ Ôn GDCT1 — 20 ngày, 100 câu hỏi, một cuốn sổ.">
+  <meta property="og:description" content="100 câu từ 70 ảnh đề, lịch 20 ngày tới 12.11.2026, ôn ngắt quãng, chạy offline, không tài khoản.">
+  <meta property="og:image" content="https://kimducanh27-cpu.github.io/so-on-gdct1/assets/og-cover.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Sổ Ôn GDCT1: màn hình Hôm nay Ngày 01/20 cạnh dòng chữ “20 ngày, 100 câu hỏi, một cuốn sổ.”">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Sổ Ôn GDCT1 — 20 ngày, 100 câu hỏi, một cuốn sổ.">
+  <meta name="twitter:description" content="100 câu từ 70 ảnh đề, lịch 20 ngày tới 12.11.2026, ôn ngắt quãng, chạy offline, không tài khoản.">
+  <meta name="twitter:image" content="https://kimducanh27-cpu.github.io/so-on-gdct1/assets/og-cover.png">
+  <meta name="twitter:image:alt" content="Sổ Ôn GDCT1: màn hình Hôm nay Ngày 01/20 cạnh dòng chữ “20 ngày, 100 câu hỏi, một cuốn sổ.”">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#F4F1EA">
+  <link rel="icon" href="./app/icons/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="./assets/fonts/newsreader-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="./assets/fonts/newsreader-vietnamese.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="./assets/fonts/space-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="./assets/fonts/space-vietnamese.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="./assets/landing.css">
+  <script src="./assets/landing.js"></script>
 </head>
 <body>
-<a class="skip" href="#app">Bỏ qua điều hướng</a>
+  <a class="skip-link" href="#main">Bỏ qua điều hướng, vào nội dung</a>
 
-<header class="topbar">
-  <a class="brand" href="#/today" aria-label="Sổ Ôn GDCT1 — trang hôm nay">
-    <b>Sổ Ôn</b><span class="dot" aria-hidden="true"></span><span>GDCT1</span>
-  </a>
-  <nav class="nav-desktop" aria-label="Điều hướng chính">
-    <a href="#/today" data-route="today">Hôm nay</a>
-    <a href="#/library" data-route="library">Ôn tập</a>
-    <a href="#/check" data-route="check">Kiểm đáp án</a>
-    <a href="#/stats" data-route="stats">Sổ</a>
-    <a href="#/settings" data-route="settings">Cài đặt</a>
-  </nav>
-  <div class="top-actions">
-    <button class="streak-pill" id="streakPill" data-act="back-today" aria-label="Chuỗi ngày học — về trang hôm nay">
-      <span class="mark" aria-hidden="true">◆</span> Chuỗi <b>0</b> ngày
-    </button>
-    <a class="icon-btn" href="#/settings" aria-label="Cài đặt">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15.2a3.2 3.2 0 1 0 0-6.4 3.2 3.2 0 0 0 0 6.4Z"/><path d="M19.4 13a7.6 7.6 0 0 0 0-2l2-1.5-2-3.4-2.4 1a7.4 7.4 0 0 0-1.7-1L15 3.5h-6l-.3 2.6c-.6.2-1.2.6-1.7 1l-2.4-1-2 3.4L4.6 11a7.6 7.6 0 0 0 0 2l-2 1.5 2 3.4 2.4-1c.5.5 1.1.8 1.7 1l.3 2.6h6l.3-2.6c.6-.2 1.2-.6 1.7-1l2.4 1 2-3.4z"/></svg>
-    </a>
-  </div>
-</header>
+  <header class="site-header">
+    <div class="shell header-inner">
+      <a class="brand" href="./" aria-label="Sổ Ôn GDCT1 — về đầu trang">
+        <span class="brand-name">Sổ Ôn</span>
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span class="brand-code">GDCT1</span>
+      </a>
+      <nav class="site-nav" aria-label="Điều hướng chính">
+        <a href="#vi-sao">Vì sao</a>
+        <a href="#cach-hoc">Cách học</a>
+        <a href="#trong-so">Trong sổ</a>
+        <a href="#hoi-dap">Hỏi đáp</a>
+      </nav>
+      <a class="btn btn-small header-cta" href="./app/#/today">Mở sổ ôn
+        <svg class="arrow" width="16" height="16" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M4 10h11M11 5l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+  </header>
 
-<main id="app" tabindex="-1">
-  <div class="view"><div class="empty"><b>Đang mở sổ…</b>Nếu màn hình đứng yên, hãy tải lại trang.</div></div>
-</main>
+  <main id="main">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="shell hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow hero-eyebrow">Ôn thi GDCT1 <span aria-hidden="true">·</span> 20 ngày tới 12.11.2026</p>
+          <h1 class="hero-title" id="hero-title">
+            <span class="line">20 ngày,</span>
+            <span class="line">100 câu hỏi,</span>
+            <span class="line hero-accent">một cuốn sổ.</span>
+          </h1>
+          <p class="hero-lede">Một phiên vừa sức mỗi ngày: câu mới, câu đến hạn và chỗ chốt đáp án. Chạy ngay trên trình duyệt, không tài khoản, không backend.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="./app/#/today">Mở sổ ôn ngay
+              <svg class="arrow" width="18" height="18" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M4 10h11M11 5l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+            <a class="text-link" href="#cach-hoc">Xem cách học
+              <svg class="arrow" width="14" height="14" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M10 3v11M5 10l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+          </div>
+          <p class="hero-meta">Không đăng ký <span aria-hidden="true">·</span> Chạy offline sau lần đầu <span aria-hidden="true">·</span> Dữ liệu trên máy bạn</p>
+        </div>
 
-<nav class="tabbar" aria-label="Điều hướng dưới">
-  <a href="#/today" data-route="today"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5M5.5 10v10h13V10"/></svg><span>Hôm nay</span></a>
-  <a href="#/library" data-route="library"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5A1.5 1.5 0 0 1 5.5 4H19v16H5.5A1.5 1.5 0 0 1 4 18.5zM8 4v16"/></svg><span>Ôn tập</span></a>
-  <a href="#/check" data-route="check"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12.5 9 17l11-11"/><path d="M4 6h6M4 19h8"/></svg><span>Đáp án</span></a>
-  <a href="#/stats" data-route="stats"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19V9m5 10V5m5 14v-7m5 7V8"/></svg><span>Sổ</span></a>
-  <a href="#/settings" data-route="settings"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15.2a3.2 3.2 0 1 0 0-6.4 3.2 3.2 0 0 0 0 6.4Z"/><path d="M19.4 13a7.6 7.6 0 0 0 0-2l2-1.5-2-3.4-2.4 1a7.4 7.4 0 0 0-1.7-1L15 3.5h-6l-.3 2.6c-.6.2-1.2.6-1.7 1l-2.4-1-2 3.4L4.6 11a7.6 7.6 0 0 0 0 2l-2 1.5 2 3.4 2.4-1c.5.5 1.1.8 1.7 1l.3 2.6h6l.3-2.6c.6-.2 1.2-.6 1.7-1l2.4 1 2-3.4z"/></svg><span>Cài đặt</span></a>
-</nav>
+        <figure class="hero-figure">
+          <div class="hero-shot">
+            <img src="./assets/landing/today-390.webp" width="390" height="844" alt="Màn hình Hôm nay của Sổ Ôn GDCT1: Ngày 01/20, chuỗi 0 ngày, 0/100 câu và nút Bắt đầu phiên 1." fetchpriority="high" decoding="async">
+          </div>
+          <div class="day-rail" aria-hidden="true">
+            <span class="tick is-new is-today"></span>
+            <span class="tick is-new"></span><span class="tick is-new"></span><span class="tick is-new"></span><span class="tick is-new"></span><span class="tick is-new"></span><span class="tick is-new"></span><span class="tick is-new"></span><span class="tick is-new"></span><span class="tick is-new"></span><span class="tick is-new"></span><span class="tick is-new"></span>
+            <span class="tick is-review"></span><span class="tick is-review"></span><span class="tick is-review"></span><span class="tick is-review"></span><span class="tick is-review"></span><span class="tick is-review"></span><span class="tick is-review"></span><span class="tick is-review"></span>
+          </div>
+          <figcaption class="rail-caption">
+            <span class="rail-today">01 <span aria-hidden="true">·</span> hôm nay</span>
+            <span class="rail-legend">12 ngày học mới <span aria-hidden="true">·</span> 8 ngày ôn</span>
+            <span class="rail-end">20 <span aria-hidden="true">·</span> 12.11.2026</span>
+          </figcaption>
+        </figure>
+      </div>
+    </section>
 
-<div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <section class="section" id="vi-sao" aria-labelledby="vi-sao-title">
+      <div class="shell section-grid">
+        <p class="eyebrow section-label">Vì sao</p>
+        <div class="section-body">
+          <h2 id="vi-sao-title">Đủ câu để ôn. <em>Đủ nhẹ</em> để mở mỗi ngày.</h2>
+          <p class="section-lede">Không thêm một app học nữa. Một cuốn sổ chỉ mục cho đúng 100 câu cần ôn, xếp theo số ngày còn lại.</p>
 
-<noscript><div class="view"><div class="panel"><h1 class="display" style="font-size:40px">Cần JavaScript</h1><p class="lede mt-8">Sổ ôn chạy hoàn toàn bằng JavaScript để lưu tiến độ trên máy bạn. Hãy bật JavaScript rồi tải lại.</p></div></div></noscript>
+          <dl class="index-list">
+            <div class="index-row">
+              <dt>Dữ liệu</dt>
+              <dd>
+                <h3>100 câu từ 70 ảnh đề</h3>
+                <p>Đã khử trùng, giữ id ổn định và chia thành 6 nhóm chủ đề. Tiến độ không lệch khi bạn quay lại.</p>
+              </dd>
+            </div>
+            <div class="index-row">
+              <dt>Lịch</dt>
+              <dd>
+                <h3>20 ngày, tới 12.11.2026</h3>
+                <p>Câu mới dồn vào 12 ngày đầu; 8 ngày còn lại dành cho ôn ngắt quãng. Lịch tự tính từ ngày bạn mở sổ.</p>
+              </dd>
+            </div>
+            <div class="index-row">
+              <dt>Nhịp</dt>
+              <dd>
+                <h3>Phiên ngắn, chuỗi dài</h3>
+                <p>Mục tiêu ngày và độ dài phiên chỉnh được trong Cài đặt. Câu sai và câu đánh dấu có lối tắt riêng để quay lại.</p>
+              </dd>
+            </div>
+            <div class="index-row">
+              <dt>Riêng tư</dt>
+              <dd>
+                <h3>Không tài khoản, không backend</h3>
+                <p>Tiến độ nằm trong localStorage của trình duyệt. Sau lần đầu, sổ vẫn mở khi mất mạng.</p>
+              </dd>
+            </div>
+          </dl>
+        </div>
+      </div>
+    </section>
 
-<script src="data/questions.js"></script>
-<script src="data/answers.js"></script>
-<script src="assets/app.js"></script>
+    <section class="answers" aria-labelledby="answers-title">
+      <div class="shell section-grid">
+        <p class="eyebrow section-label">Đáp án</p>
+        <div class="section-body">
+          <h2 id="answers-title">Biết câu nào đã chắc, <em>câu nào còn phải kiểm.</em></h2>
+          <p class="section-lede">Câu nào cũng có đáp án, nhưng không giả vờ mọi đáp án đều như nhau. Sổ ghi rõ nguồn của từng nhóm.</p>
+
+          <dl class="answers-ledger">
+            <div class="ledger-item">
+              <dt class="ledger-label">Đối chiếu giáo trình</dt>
+              <dd class="ledger-value">44</dd>
+              <dd class="ledger-note">Đã rà lại với giáo trình trước khi đưa vào sổ.</dd>
+            </div>
+            <div class="ledger-item">
+              <dt class="ledger-label">Bản tham khảo</dt>
+              <dd class="ledger-value">56</dd>
+              <dd class="ledger-note">Tổng hợp từ đề gốc; đọc lại phần giải thích khi ôn.</dd>
+            </div>
+            <div class="ledger-item">
+              <dt class="ledger-label">Cần kiểm tra</dt>
+              <dd class="ledger-value">7</dd>
+              <dd class="ledger-note">Đang được đánh dấu để bạn tự xác nhận, không mặc định là đúng.</dd>
+            </div>
+          </dl>
+          <p class="answers-note">Bạn có thể xem, sửa và xác nhận từng đáp án trong trang Kiểm đáp án. Mọi thay đổi lưu trên máy.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="cach-hoc" aria-labelledby="steps-title">
+      <div class="shell section-grid">
+        <p class="eyebrow section-label">Cách học</p>
+        <div class="section-body">
+          <h2 id="steps-title">Mở sổ. Ôn phiên hôm nay. <em>Chốt lại.</em></h2>
+          <p class="section-lede">Ba bước, lặp lại mỗi ngày. Không cần lập lại kế hoạch.</p>
+
+          <ol class="steps">
+            <li class="step">
+              <span class="step-num" aria-hidden="true">01</span>
+              <h3>Mở sổ</h3>
+              <p>Lần đầu mở, sổ tự xếp 20 ngày từ hôm nay tới 12.11 và chia câu mới theo từng ngày.</p>
+            </li>
+            <li class="step">
+              <span class="step-num" aria-hidden="true">02</span>
+              <h3>Ôn phiên hôm nay</h3>
+              <p>Mỗi phiên trộn câu mới với câu đến hạn. Chọn xong mới thấy đáp án và giải thích.</p>
+            </li>
+            <li class="step">
+              <span class="step-num" aria-hidden="true">03</span>
+              <h3>Chốt lại</h3>
+              <p>Xem câu sai, kiểm đáp án và giữ chuỗi. Hôm sau, sổ đưa lại câu đến hạn và câu mới theo lịch.</p>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-preview" id="trong-so" aria-labelledby="preview-title">
+      <div class="shell section-grid">
+        <p class="eyebrow section-label">Trong sổ</p>
+        <div class="section-body">
+          <h2 id="preview-title">Ba trang bạn sẽ <em>mở nhiều nhất.</em></h2>
+          <p class="section-lede">Ảnh chụp từ app thật, không phải mock.</p>
+
+          <div class="preview-grid">
+            <figure class="preview">
+              <div class="preview-frame">
+                <img src="./assets/landing/today-390.webp" width="390" height="844" alt="Màn hình Hôm nay: Ngày 01/20, chuỗi 0 ngày, 0/100 câu, phiên học chính 9 câu và các lối tắt." loading="lazy" decoding="async">
+              </div>
+              <figcaption>
+                <span class="preview-name">Hôm nay</span>
+                <span class="preview-desc">Chuỗi ngày, mục tiêu và phiên học chính nằm cùng một chỗ.</span>
+              </figcaption>
+            </figure>
+            <figure class="preview">
+              <div class="preview-frame">
+                <img src="./assets/landing/library-390.webp" width="390" height="844" alt="Danh sách 100 câu hỏi, mỗi câu có nhãn Bản tham khảo; bộ lọc Tất cả, Chưa học, Đến hạn, Câu sai." loading="lazy" decoding="async">
+              </div>
+              <figcaption>
+                <span class="preview-name">Ôn theo câu</span>
+                <span class="preview-desc">Tìm theo nội dung hoặc phương án; lọc câu chưa học, đến hạn, câu sai.</span>
+              </figcaption>
+            </figure>
+            <figure class="preview">
+              <div class="preview-frame">
+                <img src="./assets/landing/check-390.webp" width="390" height="844" alt="Trang Kiểm đáp án: 44 câu đã đối chiếu giáo trình, 56 câu tham khảo, bộ lọc Kiểm tra 7." loading="lazy" decoding="async">
+              </div>
+              <figcaption>
+                <span class="preview-name">Kiểm đáp án</span>
+                <span class="preview-desc">44 câu đối chiếu, 56 câu tham khảo, 7 câu cần kiểm tra.</span>
+              </figcaption>
+            </figure>
+          </div>
+
+
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-faq" id="hoi-dap" aria-labelledby="faq-title">
+      <div class="shell section-grid">
+        <p class="eyebrow section-label">Hỏi đáp</p>
+        <div class="section-body">
+          <h2 id="faq-title">Vài điều nên biết <em>trước khi mở.</em></h2>
+
+          <div class="faq-list">
+            <details class="faq-item">
+              <summary>
+                <span class="faq-q">Sổ có cần tài khoản hay mạng không?</span>
+                <span class="faq-icon" aria-hidden="true"></span>
+              </summary>
+              <div class="faq-a">
+                <p>Không. Không có đăng nhập, không backend. Sau lần mở đầu, app chạy offline; nếu cài lên màn hình chính, mở như một app.</p>
+              </div>
+            </details>
+            <details class="faq-item">
+              <summary>
+                <span class="faq-q">Tiến độ của tôi được lưu ở đâu?</span>
+                <span class="faq-icon" aria-hidden="true"></span>
+              </summary>
+              <div class="faq-a">
+                <p>Trong localStorage của trình duyệt trên chính thiết bị này. Xoá dữ liệu trình duyệt hoặc đổi trình duyệt sẽ mất tiến độ; sổ không có bản sao trên mây.</p>
+              </div>
+            </details>
+            <details class="faq-item">
+              <summary>
+                <span class="faq-q">Vì sao có câu ghi “Bản tham khảo”?</span>
+                <span class="faq-icon" aria-hidden="true"></span>
+              </summary>
+              <div class="faq-a">
+                <p>44 câu đã đối chiếu giáo trình; 56 câu còn lại là bản tham khảo từ đề gốc. 7 câu đang được đánh dấu “Cần kiểm tra” để bạn tự xác nhận.</p>
+              </div>
+            </details>
+            <details class="faq-item">
+              <summary>
+                <span class="faq-q">Đáp án sai thì sửa thế nào?</span>
+                <span class="faq-icon" aria-hidden="true"></span>
+              </summary>
+              <div class="faq-a">
+                <p>Mở trang Kiểm đáp án, chọn câu và sửa. Đáp án bạn xác nhận được ưu tiên và lưu trên máy.</p>
+              </div>
+            </details>
+            <details class="faq-item">
+              <summary>
+                <span class="faq-q">Sổ có thay thế giáo trình không?</span>
+                <span class="faq-icon" aria-hidden="true"></span>
+              </summary>
+              <div class="faq-a">
+                <p>Không. Đây là công cụ ôn tập cá nhân từ 70 ảnh đề đã tải lên; hãy đối chiếu với giáo trình và hướng dẫn chính thức của môn học.</p>
+              </div>
+            </details>
+          </div>
+
+          <p class="faq-more">Còn câu khác? <a class="text-link" href="https://github.com/kimducanh27-cpu/so-on-gdct1">Mở repo trên GitHub</a>.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta-final" aria-labelledby="cta-title">
+      <div class="shell cta-inner">
+        <div class="cta-copy">
+          <p class="eyebrow">Bắt đầu</p>
+          <h2 id="cta-title">Ngày 01 bắt đầu từ <em>một cú bấm.</em></h2>
+          <p class="cta-lede">Mở sổ, nhận lịch 20 ngày và phiên đầu tiên. Không cần đăng ký.</p>
+        </div>
+        <div class="cta-actions">
+          <a class="btn btn-primary btn-large" href="./app/#/today">Mở sổ ôn ngay
+            <svg class="arrow" width="18" height="18" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M4 10h11M11 5l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <p class="cta-meta">24.10 – 12.11.2026 <span aria-hidden="true">·</span> 100 câu <span aria-hidden="true">·</span> 6 nhóm</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="shell footer-grid">
+      <div class="footer-brand">
+        <a class="brand" href="./" aria-label="Sổ Ôn GDCT1 — về đầu trang">
+          <span class="brand-name">Sổ Ôn</span>
+          <span class="brand-mark" aria-hidden="true"></span>
+          <span class="brand-code">GDCT1</span>
+        </a>
+        <p>Một cuốn sổ ôn GDCT1, chạy trên máy bạn.</p>
+      </div>
+      <nav class="footer-col" aria-label="Liên kết chân trang">
+        <p class="footer-label">Trong trang</p>
+        <a href="#vi-sao">Vì sao</a>
+        <a href="#cach-hoc">Cách học</a>
+        <a href="#trong-so">Trong sổ</a>
+        <a href="#hoi-dap">Hỏi đáp</a>
+      </nav>
+      <div class="footer-col">
+        <p class="footer-label">Mở sổ</p>
+        <a href="./app/#/today">Hôm nay</a>
+        <a href="./app/#/library">Ôn theo câu</a>
+        <a href="./app/#/check">Kiểm đáp án</a>
+        <a href="https://github.com/kimducanh27-cpu/so-on-gdct1">GitHub</a>
+      </div>
+      <p class="footer-fine">Không backend <span aria-hidden="true">·</span> Không tài khoản <span aria-hidden="true">·</span> Dữ liệu lưu trong trình duyệt.<br>Cập nhật 24.10.2026. Không liên kết với đơn vị tổ chức thi.</p>
+    </div>
+  </footer>
 </body>
 </html>

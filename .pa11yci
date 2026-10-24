@@ -1,0 +1,14 @@
+{
+  "defaults": {
+    "standard": "WCAG2AA",
+    "timeout": 60000,
+    "concurrency": 1,
+    "chromeLaunchConfig": {
+      "args": ["--no-sandbox", "--disable-gpu"]
+    }
+  },
+  "urls": [
+    "http://127.0.0.1:8123/so-on-gdct1/",
+    "http://127.0.0.1:8123/so-on-gdct1/404.html"
+  ]
+}
