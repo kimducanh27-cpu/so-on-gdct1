@@ -1,6 +1,6 @@
 # PROJECT STATE
 
-Cập nhật: 2026-10-25 · **UI rework v2 “Phiếu thi & bút đỏ” implemented + verified local** (T-UI-01..06), **chưa deploy** · Bản live hiện tại vẫn là `main` @ `b3f89a1`: https://kimducanh27-cpu.github.io/so-on-gdct1/ · Nhánh `landing-page` giữ nguyên tại `b3f89a1` · Nguồn gốc: repo `kimducanh27-cpu/so-on-gdct1` @ `e4cac8c` · T-DOC-01 và T-DEPLOY-01 done-verified; T-UI-07 chờ triển khai.
+Cập nhật: 2026-10-25 · **Đã deploy UI v2** `main` @ `c4ae353` lên https://kimducanh27-cpu.github.io/so-on-gdct1/ · Bản trước `b3f89a1` (UI v1) là mốc rollback; nhánh `landing-page` giữ nguyên tại `b3f89a1` · Nguồn gốc: repo `kimducanh27-cpu/so-on-gdct1` @ `e4cac8c` · T-DOC-01, T-DEPLOY-01 và T-UI-01..07 done-verified.
 
 ## Stack & môi trường
 
@@ -86,7 +86,23 @@ UI v2 (2026-10-25):
 - Trước UI v2 (T-PERF-01): LCP local 2.10 s, total 156,129 B; UI v2 nặng hơn CSS/ảnh một chút nhưng LCP local còn 1.955 s. LCP từng 2.40 s trước khi đổi Newsreader sang instance tĩnh wght=400; bản gốc backup ở `%TEMP%/gdct1-font-backup/`.
 - Lưu ý: server local không gzip; GitHub Pages nén. `uses-text-compression` là artifact local, không đưa vào assertion.
 
-### Lighthouse production (2026-10-24)
+### Lighthouse production UI v2 (2026-10-25)
+
+| Hạng mục | Run 1 | Run 2 | Run 3 | Median | Ngưỡng |
+|---|---|---|---|---|---|
+| Performance | 1.00 | 1.00 | 1.00 | **1.00** | ≥0.90 |
+| Accessibility | 1 | 1 | 1 | **1** | =1 |
+| Best Practices | 1 | 1 | 1 | **1** | ≥0.95 |
+| SEO | 1 | 1 | 1 | **1** | =1 |
+| LCP | 1205.78 ms | 1454.54 ms | 1207.13 ms | **1207.13 ms** | ≤2500 |
+| TBT | 0 | 0 | 0 | **0** | ≤200 |
+| CLS | 0 | 0 | 0 | **0** | ≤0.1 |
+| TTFB | 23.47 ms | 257.52 ms | 31.96 ms | **31.96 ms** | ≤800 |
+| Total bytes | 102,567 | 102,374 | 102,518 | **102,518** | ≤1.5 MB |
+
+- Chạy LHCI 0.14.0 trỏ live, 3 run mobile, output `C:/tmp/lhci-live-out` (manifest lần chạy mới); assertion exit 0. Nhanh hơn local nhờ gzip GitHub Pages.
+
+### Lighthouse production trước UI v2 (2026-10-24)
 
 | Hạng mục | Run 1 | Run 2 | Run 3 | Median | Ngưỡng |
 |---|---|---|---|---|---|
@@ -110,7 +126,8 @@ UI v2 (2026-10-25):
 - Chromium CDP (`scripts/browser-audit.mjs`): landing + 404 × 5 viewport không overflow, 1 h1, font tải, console sạch, ảnh lazy tải đủ, CTA đúng `app/#/today`; 8 route app render; keyboard 24 bước ring ≥2px không bị che; FAQ Enter; reduced motion; 0 request third-party.
 - Firefox BiDi (`scripts/firefox-smoke.mjs`): landing + 404 × 5 viewport, console sạch, 8 route app, 0 console error.
 - Firefox Marionette (`scripts/firefox-keyboard.mjs`): focus thật (`document.hasFocus()`), skip link, 22 bước Tab ring ≥2px không bị che, FAQ Enter.
-- **Live 2026-10-24:** Chromium audit cùng script trên base production pass toàn bộ (landing + 404 × 5 viewport, 8 route app, keyboard 24 bước, FAQ, reduced motion, 0 third-party, 0 console error); Firefox BiDi 8 route pass; Marionette keyboard pass; pa11y live 2/2 URL 0 error; redirect legacy 5 route pass khi tải trang mới; HTTP 200 cho 14 endpoint (landing, app, manifest, 2 SW, CSS/JS, OG, ảnh, font, robots, sitemap, 404, data).
+- **Live UI v2 2026-10-25 (commit `c4ae353`):** 16 endpoint 200 đúng content-type (landing 25,989 B, app, manifest, 2 SW, CSS/JS, OG 131,423 B, ảnh, font, data, robots, sitemap, 404); 404 tùy biến 404 cho path lạ; `/app/sw.js` `gdct1-v5`, root kill-switch, manifest `id: "../"`; redirect legacy 5 route tải document mới → `/app/#/...` render; app SW scope `/app/` active + controller + cache `gdct1-v5`; Chromium audit pass 2/2 lần (lần đầu 1 flake không truy được, 2 lần sau exit 0); Firefox BiDi + Marionette 22 bước pass; pa11y live 2/2 URL 0 error; LHCI 3 run Perf 1.0, LCP median 1,207 ms, CLS 0, TTFB 32 ms.
+- **Live UI v1 2026-10-24:** Chromium audit cùng script trên base production pass toàn bộ (landing + 404 × 5 viewport, 8 route app, keyboard 24 bước, FAQ, reduced motion, 0 third-party, 0 console error); Firefox BiDi 8 route pass; Marionette keyboard pass; pa11y live 2/2 URL 0 error; redirect legacy 5 route pass khi tải trang mới; HTTP 200 cho 14 endpoint (landing, app, manifest, 2 SW, CSS/JS, OG, ảnh, font, robots, sitemap, 404, data).
 - WebKit/iOS: **BLOCKED** — không có runtime/thiết bị; không tính pass.
 - Artifact: log ở `%TEMP%/gdct1-qa` (hoặc `QA_OUT`); ảnh 5 viewport copy vào `.memory/visual_ledger/qa/`.
 - Lưu ý: Firefox headless BiDi không cấp focus thật nên keyboard tách sang Marionette; app hash route bị pa11y coi là anchor thiếu (13 false positive) nên pa11y chỉ chạy landing + 404.
@@ -131,6 +148,12 @@ UI v2 (2026-10-25):
 - Live smoke: title mới, 1 h1, CTA `./app/#/today`, 4 section, OG absolute, canonical; `/app/` `noindex`; `sw.js` kill-switch + `app/sw.js` `gdct1-v4`; manifest `id: "../"`; 404 tùy biến; robots + sitemap.
 - Redirect `#/check|today|library|exam-setup|stats` → `/app/#/...`, app render; lưu ý test phải tải document mới (điều hướng chỉ đổi hash trong cùng document không chạy lại `landing.js`).
 - Chưa kiểm chứng: cài PWA thật/gỡ bản cài cũ, WebKit/iOS.
+
+### Deploy UI v2 (T-UI-07) — done 2026-10-25
+
+- Push `c7ce653..c4ae353 main -> main`; Pages build legacy từ `main` `/` cập nhật sau ~30 s. Commit phát hành **`c4ae353`**; rollback `git revert c4ae353` + push (không force push). `landing-page` vẫn ở `b3f89a1`.
+- Live xác nhận landing mới (form strip, bảng 100 ô, CTA), app render 8 route, 404 tùy biến, OG 131,423 B, SW `gdct1-v5` và cache đúng scope. Chi tiết bằng chứng ở mục QA gate “Live UI v2”.
+- Lighthouse live UI v2: Perf 1.0 cả 3 run, A11y/BP/SEO 1, LCP median 1,207 ms, TBT/CLS 0.
 
 ## Redirect legacy (T-REDIR-01)
 
@@ -158,11 +181,12 @@ UI v2 (2026-10-25):
 
 ## Vấn đề mở / nợ
 
-- Live vẫn là `main` @ `b3f89a1` (UI v1); UI v2 đã verify local nhưng **chưa commit/push/deploy** — T-UI-07. Ảnh OG tuyệt đối trên live vẫn là bản cũ 128,061 B.
+- Đã deploy UI v2 `main` @ `c4ae353`; không còn nợ push/deploy. Ảnh OG live đã là bản 131,423 B.
 - 7 câu needsReview là backlog nội dung, ngoài phạm vi UI.
 - README đã cập nhật SW v5; linkinator chỉ tính link nội bộ.
 - App pa11y có 13 false positive do hash route bị coi là anchor thiếu; phạm vi a11y là landing + 404, ghi trong README.
 - 404 hard-code base `/so-on-gdct1/`.
-- Chưa test PWA cài thật/standalone thật; chưa kiểm bản cài cũ có bị trùng; WebKit/iOS chưa có thiết bị.
+- Chưa test PWA cài thật/standalone thật; chưa kiểm bản cài cũ có bị trùng sau deploy UI v2; WebKit/iOS chưa có thiết bị.
 - Chưa kiểm zoom 400% tự động; chưa có field data (không analytics theo quyết định).
 - Trang đã deploy không có header bảo mật tùy biến (giới hạn GitHub Pages).
+- Chromium live audit có 1 lần fail không truy được check cụ thể trước khi pass 2/3 và 2 lần liên tiếp sau đó; nếu tái diễn cần bắt log đầy đủ.

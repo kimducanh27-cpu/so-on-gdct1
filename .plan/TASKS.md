@@ -168,7 +168,7 @@ Tổng: 13 task (6 M, 7 S). Nền = 3/13 = 23% (< 25%). Không task XL, không U
 | T-UI-04 | App: Thư viện, Kiểm đáp án, Sổ, Cài đặt, Thi thử | M | U1 | T-UI-03 | M3 | done-verified |
 | T-UI-05 | Ảnh app, OG, 404, SW cache v5 | M | U2 | T-UI-04 | M3 | done-verified |
 | T-UI-06 | QA, before/after, tài liệu | S | U2 | T-UI-05 | M4 | done-verified |
-| T-UI-07 | Deploy production + smoke live | S | U2 | T-UI-06 | M5 | doing |
+| T-UI-07 | Deploy production + smoke live | S | U2 | T-UI-06 | M5 | done-verified |
 
 ### T-UI-01 — Audit UI + bằng chứng trước
 - **DoD:** `bash scripts/verify.sh` xanh trước thay đổi; 13 ảnh before (landing 320/390/768/1280; app today 390/1280; library/check/stats/settings/exam-setup/study/review-sheet 390); F-UI-01..10 + design_revision ghi ở `.memory/UI_REVIEW.md`; 0 console error.
@@ -204,3 +204,4 @@ Tổng: 13 task (6 M, 7 S). Nền = 3/13 = 23% (< 25%). Không task XL, không U
 - **DoR:** T-UI-06 xanh + người dùng đã nói “triển luôn”.
 - **DoD:** commit + push `main`; live `/`, `/app/`, ảnh, SW v5 trả 200; redirect legacy; manifest giữ `id: "../"`; smoke Chromium + LHCI live; ghi commit rollback.
 - **Bằng chứng:** URL live, commit hash, log smoke.
+- **Kết quả 2026-10-25:** commit `c4ae353`, push `c7ce653..c4ae353 main -> main`; Pages build xong sau ~30 s. Live 16 endpoint 200, landing có form strip + bảng 100 ô, 404 tùy biến, OG 131,423 B, app SW `gdct1-v5` scope `/app/` active/controller, cache đúng, manifest `id: "../"`; redirect legacy 5 route pass; Chromium audit 2 lần liên tiếp pass (lần đầu 1 flake không truy được), Firefox BiDi + Marionette pass, pa11y 2/2 URL 0 error; LHCI live 3 run Perf 1.0, A11y/BP/SEO 1, LCP median 1,207 ms, TBT/CLS 0, TTFB 32 ms. Rollback: `git revert c4ae353` + push; `landing-page` giữ `b3f89a1`.

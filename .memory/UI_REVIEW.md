@@ -72,4 +72,4 @@ Tham chiếu: mockup `ui-direction-v2.html` (visual reference, không phải cod
 
 ## 6. Trạng thái design review
 
-`verified` — F-UI-01..10 đã xử lý và kiểm bằng gate local; người dùng duyệt mockup (“muốn”) và yêu cầu tinh chỉnh + triển khai (“cải thiện gui lại tí là ngon, triển luôn”). Chờ T-UI-07 deploy production.
+`verified` — F-UI-01..10 đã xử lý và kiểm bằng gate local; người dùng duyệt mockup (“muốn”) và yêu cầu tinh chỉnh + triển khai (“cải thiện gui lại tí là ngon, triển luôn”). Đã deploy `main` @ `c4ae353`; live smoke pass (Chromium 2 lần, Firefox BiDi/Marionette, pa11y 2/2, LHCI Perf 1.0, LCP median 1,207 ms).

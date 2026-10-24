@@ -53,3 +53,11 @@ Ngày: 2026-10-24 · Phạm vi: landing mới + chuyển app sang `/app/` · Ng�
 - **Lighthouse 12.1.0 / LHCI 0.14.0, mobile, 3 run local:** Performance 0.99 ×3; A11y/BP/SEO 1; LCP 1,955.99 / 1,953.56 / 1,955.03 ms; TBT 0; CLS 0; total 149,034 B. CSS landing 31,735 B, 4 font 88,372 B, OG 131,423 B, screenshot 24,790–40,928 B.
 - **Thị giác:** 14 ảnh `.memory/visual_ledger/after-ui-v2/` (landing 320/390/768/1280, 404-390, 7 route app 390 + today 1280) — không overflow, console 0 error; chip lọc wrap đủ trên mobile; 404 footer không bị cắt ở 900px.
 - **Không đổi:** id câu, nội dung đáp án, khóa `so-on-gdct1.v1`, route app, tính năng. Chỉ CSS/markup/copy trình bày và cache SW.
+
+## Kết quả kiểm chứng live UI v2 (2026-10-25, `c4ae353`)
+
+- **Deploy:** push `c7ce653..c4ae353`; live đổi sau ~30 s. 16 endpoint 200 đúng content-type; landing 25,989 B có form strip + bảng 100 ô; OG 131,423 B 1200×630; 404 tùy biến trả 404 cho path lạ; robots + sitemap đúng.
+- **PWA:** `app/sw.js` `gdct1-v5`, scope `/app/`, active + controller, `caches.keys()` chỉ `['gdct1-v5']` trong profile sạch; root kill-switch; manifest `id: "../"`.
+- **Redirect:** 5 hash legacy tải document mới → `/app/#/...` render (25,221 / 1,315 / 13,404 / 559 / 1,398 ký tự); root không hash giữ landing.
+- **Browser:** Chromium live audit pass 2 lần liên tiếp; Firefox BiDi 5 viewport + 8 route pass; Marionette keyboard 22 bước pass; pa11y live 2/2 URL 0 error. Lần audit đầu có 1 flake không truy được check (không lặp lại).
+- **LHCI live 3 run:** Perf 1.0 cả 3; A11y/BP/SEO 1; LCP 1,205.78 / 1,454.54 / 1,207.13 ms (median 1,207.13); TBT 0; CLS 0; TTFB median 31.96 ms; total bytes median 102,518.

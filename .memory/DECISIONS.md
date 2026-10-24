@@ -177,3 +177,12 @@
 **Lý do:** Tránh phục vụ asset cũ và không đụng cache của landing/probe khác; migration kiểm bằng profile sạch.
 **Kiểm chứng:** Chrome 155 — `gdct1-v4` bị xoá, `gdct1-v5` 34 entry, cache `landing-probe` còn; offline `/app/#/library` render 100 dòng, 0 console error. `check-data` assert `'gdct1-v5'`.
 **Ảnh hưởng:** T-UI-05, T-PWA-01, README.
+
+## 2026-10-25 — Deploy UI v2 từ `main` @ `c4ae353`
+
+**Bối cảnh:** Người dùng nói “cải thiện gui lại tí là ngon, triển luôn”; T-UI-06 đã xanh local và live UI v1 đang là `b3f89a1`.
+**Chọn:** Commit `c4ae353` (source + tài liệu + bằng chứng), push trực tiếp `main`, để Pages build legacy; không force push, không đụng nhánh `landing-page` (`b3f89a1`).
+**Loại:** Tạo nhánh release/tag riêng; push lên nhánh khác rồi merge.
+**Lý do:** `main` là nguồn Pages; một commit duy nhất gói cả UI + cache bump giúp rollback sạch. “Triển luôn” là uỷ quyền cho phát hành này, không mở rộng cho thay đổi khác.
+**Kiểm chứng:** Push `c7ce653..c4ae353`; live đổi sau ~30 s; 16 endpoint 200; 404 tùy biến; redirect legacy 5 route; app SW `gdct1-v5` active/controller; Chromium 2 lần pass liên tiếp, Firefox + Marionette pass, pa11y 2/2, LHCI live Perf 1.0, LCP median 1,207 ms.
+**Ảnh hưởng:** T-UI-07, PROJECT_STATE, TASKS. Rollback: `git revert c4ae353` + push.

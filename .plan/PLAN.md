@@ -188,4 +188,4 @@ project:
 
 **Rủi ro:** mất tương phản khi tăng mật độ đỏ; QA script phụ thuộc markup cũ; ảnh/OG lệch; SW phục vụ CSS cũ; layout 320px với bảng 10 cột. Giảm thiểu: giữ selector QA, đo contrast, chụp 5 viewport, bump cache + test offline.
 
-**Trạng thái 2026-10-25:** T-UI-01..06 done-verified; T-UI-07 đang triển khai. `verify.sh` exit 0 (gate đầy đủ); LHCI 3 run local: Perf 0.99, A11y/BP/SEO 1, LCP median 1,955.03 ms; 14 ảnh after; SW `gdct1-v5` migration + offline pass. Live vẫn là `b3f89a1` (UI v1) cho tới khi push xong.
+**Trạng thái 2026-10-25:** T-UI-01..07 done-verified. `verify.sh` exit 0; LHCI local 3 run Perf 0.99, LCP median 1,955 ms; LHCI live 3 run Perf 1.0, LCP median 1,207 ms; SW `gdct1-v5` migration + offline pass. Đã push `main` @ `c4ae353`; live https://kimducanh27-cpu.github.io/so-on-gdct1/. Rollback `git revert c4ae353` + push; `landing-page` giữ `b3f89a1`.
