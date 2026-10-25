@@ -1,8 +1,8 @@
-# QA MATRIX — Motion v3 + hard review (local RC)
+# QA MATRIX — Motion v3 + hard review (deployed 2026-10-26)
 
-**Protocol:** web-agent/2.5 · **Work mode:** `ui_rework` · **Delivery target:** release_candidate (local) · **Deployment:** `not_deployed` · **Review:** `awaiting_feedback` (chưa có accepted).
+**Protocol:** web-agent/2.5 · **Work mode:** `ui_rework` · **Delivery target:** release_candidate · **Deployment:** `deployed_verified` 2026-10-26 @ `2671b02` · **Review:** `awaiting_feedback` (chưa có accepted).
 
-**Context:** repo `kimducanh27-cpu/so-on-gdct1`, HEAD `d0f962c` + dirty tree (xem `git status`; không commit trong phiên này). OS Windows 10.0.26200; Node **v24.21.0**; Chrome **155.0.8059.86**; Firefox **158.0.1**; local server `http://127.0.0.1:8123/so-on-gdct1/`, không gzip; html-validate **9.7.1**, pa11y-ci **5.0.0**, linkinator **8.1.0**, LHCI **0.14.0**, GSAP **3.15.0**. Baseline production: UI v2 `c4ae353` (SW v5); local target: `gdct1-v8`.
+**Context:** repo `kimducanh27-cpu/so-on-gdct1`, commit phát hành `2671b02` (trước đó HEAD `d0f962c` + dirty tree trong phiên); live SW v8. OS Windows 10.0.26200; Node **v24.21.0**; Chrome **155.0.8059.86**; Firefox **158.0.1**; local server `http://127.0.0.1:8123/so-on-gdct1/`, không gzip; html-validate **9.7.1**, pa11y-ci **5.0.0**, linkinator **8.1.0**, LHCI **0.14.0**, GSAP **3.15.0**. Baseline production: UI v2 `c4ae353` (SW v5); local target: `gdct1-v8`.
 
 **Obligation:** `required` = bắt buộc theo scope; `advisory` = tham khảo. Stage `local`, environment `local-test`; gate group G2 lint, G3 schema, G5 serve, G6 E2E, G7 UI/a11y/motion, G8 perf, G9 security/PWA. Evidence logs nằm ở `$QA_OUT` (`/tmp/gdct1-qa` mặc định); screenshot trong repo; report LHCI trong `.lighthouseci/` (ignored).
 
@@ -27,8 +27,8 @@
 | PWA cài thật/đè bản cũ | V-PWA-INSTALL-01 | required khi release | local / G9 | — | cài/không trùng | chưa cài thật | **not_run** | PROJECT_STATE |
 | Zoom 400% | V-ZOOM-01 | advisory | local / G7 | — | reflow đúng | chưa tự động | **not_run** | PROJECT_STATE |
 | Low-end Android | V-LOWEND-01 | advisory | local / G8 | — | không jank | chưa đo | **not_run** | PROJECT_STATE |
-| Production live sau deploy | V-LIVE-01 | required ở `post_deploy` | post_deploy / G9 | — | host smoke/revision | chưa được phép deploy | **not_run** | deployment_state |
+| Production live sau deploy | V-LIVE-01 | required ở `post_deploy` | post_deploy / G9 | curl + `sw-audit`/`browser-audit`/`motion-audit`/LHCI live | host smoke/revision | live `2671b02`, SW v8, endpoints 200; Chromium/motion/SW/pa11y/Firefox pass; LHCI 1.0/LCP 1,354/CLS 0 | **pass** | `/tmp/live-chromium.log`, `/tmp/live-motion.log`, live LHCI dir |
 
-**Aggregation:** `verified_change` + `verified_local` cho scope hard review/Motion v3 với các check required ở trên; **không** claim `release_ready` (chưa có sign-off/real PWA/WebKit); deployment_state `not_deployed`. Baseline live UI v2 `c4ae353` tách riêng; không suy production đã verify.
+**Aggregation:** `verified_change` + `verified_local` (scope) và `deployment_state: deployed_verified` sau live smoke. **Không** claim `release_ready` (chưa có sign-off/real PWA/WebKit). Baseline live cũ UI v2 `c4ae353` tách riêng; live hiện là `2671b02`.
 
 **Ngoại lệ/giới hạn:** GSAP license “no charge”, không OSI (ghi vendor/README/DECISIONS); LHCI local không gzip; migration SW mô phỏng bằng cache v7 + reload, không phải bản cài cũ thật; V-UI-18/19 là visual inspection có ảnh before/after, không phải pixel-diff tự động.

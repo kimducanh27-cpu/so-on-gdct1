@@ -13,7 +13,7 @@
 - **Icon “Đáp án”:** đổi check + hai gạch rời thành ô vuông + check (checkbox) cùng stroke 1.6; active giữ đỏ.
 - **Cache:** bump `gdct1-v8` sau khi sửa app shell (icon tab); test migration v7→v8 + offline pass.
 
-**Đo:** UI review 320/390/1280: 0 overflow, 0 visible target <44 (chỉ input file ẩn), console 0 error; motion-audit 46/46; verify exit 0. **Chưa deploy.**
+**Đo:** UI review 320/390/1280: 0 overflow, 0 visible target <44 (chỉ input file ẩn), console 0 error; motion-audit 46/46; verify exit 0. **Đã deploy 2026-10-26** `2671b02`; live v8, LHCI 1.0/LCP 1,354ms/TBT 0/CLS 0; live smoke pass.
 
 ## 2026-10-25 — Motion v3: GSAP tự host + hero CSS, app subtle
 

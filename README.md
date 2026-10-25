@@ -2,7 +2,7 @@
 
 Landing page ở `/` và app ôn trắc nghiệm ở `/app/`. Toàn bộ là HTML/CSS/JS tĩnh, không build, không backend, không tài khoản. Motion dùng GSAP 3.15 tự host (core + ScrollTrigger), nạp sau `load`; hero dùng CSS keyframes để không chặn LCP. Tiến độ lưu trong `localStorage` của trình duyệt.
 
-Bản đang chạy: https://kimducanh27-cpu.github.io/so-on-gdct1/ (UI v2 `c4ae353`). Motion v3 đang là local release candidate trong working tree, **chưa deploy**.
+Bản đang chạy: https://kimducanh27-cpu.github.io/so-on-gdct1/ — Motion v3 + hard review @ `2671b02`, SW `gdct1-v8` (deploy 2026-10-26).
 
 App ôn 100 câu GDCT1 từ 70 ảnh đề, lên lịch 20 ngày tới **12.11.2026**, có chuỗi ngày học, nhắc qua `.ics`, thi thử và tra – gán đáp án.
 
@@ -103,7 +103,9 @@ Lighthouse mobile (3 run, local, median sau Motion v3):
 |---|---|---|---|---|---|---|---|---|
 | **0.98** | **1** | **1** | **1** | **2,375 ms** | **20 ms** | **0** | **1 ms** | 275,386 B (chưa gzip) |
 
-Bản live UI v2 trước Motion v3: Perf 1.0, LCP 1,207 ms; sau khi deploy Motion v3 cần đo lại live. Server local không gzip; GitHub Pages nén nên số byte live thấp hơn.
+Bản live Motion v3/hard review (2026-10-26, 3 run, median): Perf **1.0**, A11y/BP/SEO **1**, LCP **1,354 ms**, TBT **0**, CLS **0**, TTFB **24 ms**, total **152,364 B**. Server local không gzip; GitHub Pages nén.
+
+Bản live UI v2 trước Motion v3: Perf 1.0, LCP 1,207 ms.
 
 ```bash
 # cửa sổ 1
@@ -145,7 +147,7 @@ Cloudflare Pages/Netlify: build command để trống, output directory là root
 - **Hero landing:** CSS keyframes (`mo-rise`, `mo-line`, `mo-scan`, `mo-flag`, `mo-pen`) chạy ngay khi CSS tải, không chờ JS; vì vậy LCP không phụ thuộc vendor. Gồm line stagger, phiếu/grid quét, rail 20 ngày, 7 cờ và nét bút khoanh “sổ”.
 - **Scroll & micro landing:** `assets/motion.js` nạp GSAP/ScrollTrigger **sau `load`**, dùng `ScrollTrigger.batch(once)`, margin progress, parallax 8px chỉ với `(pointer:fine)` và ≥761px; `focusin` mở reveal nếu người dùng Tab vào.
 - **App:** `app/assets/motion.js` + GSAP core; chỉ chạy entrance khi route/qid đổi (không replay khi pick/filter/search), **route fade 180ms không transform** để CTA fixed luôn đúng; feedback + dấu ✓/✕ vẽ nét, progress bar scaleX từ width cũ, sheet mở 200ms (đóng đồng bộ), toast 160ms. Feedback scroll căn option đã chọn dưới sticky top, tôn trọng reduce; control hiển thị ≥44px.
-- **Hard review:** đã sửa CTA “Câu tiếp” bị khuất do transform, feedback scroll mất option, tap-target <44, topbar 320, **nét bút quanh “sổ”** (một path, SVG sizing tường minh, chữ mực/nét đỏ) và **icon tab “Đáp án”** (checkbox). Xem `.memory/UI_REVIEW.md` F-UI-14..19 và ảnh `.memory/visual_ledger/after-hard-review/`.
+- **Hard review:** đã sửa CTA “Câu tiếp” bị khuất do transform, feedback scroll mất option, tap-target <44, topbar 320, **nét bút quanh “sổ”** (một path, SVG sizing tường minh, chữ mực/nét đỏ) và **icon tab “Đáp án”** (checkbox); deploy `2671b02`. Xem `.memory/UI_REVIEW.md` F-UI-14..19 và ảnh `.memory/visual_ledger/after-hard-review/`.
 - **Vendor:** `assets/vendor/` và `app/assets/vendor/` chứa GSAP 3.15.0 core; ScrollTrigger chỉ ở landing. License GreenSock Standard “no charge” (không phải OSI) + SHA-256 ghi trong `LICENSE-GSAP.txt`; không CDN, 0 request third-party. Không dùng SplitText, Lenis, Lottie, particle.
 - **Reduced motion / no-JS:** media query tắt hero CSS, `gsap.matchMedia`/listener dọn tween; không có nội dung nào bị ẩn chờ JS. Chặn GSAP vẫn đọc và dùng được toàn bộ nội dung.
 - **Kiểm tra:** `bash scripts/verify.sh` đã gồm `scripts/motion-audit.mjs` (46 check: hero/reveal, reduce, no-JS, block GSAP, app gating/bars/sheet, negative control). Chạy riêng khi server đang chạy: `node scripts/motion-audit.mjs`. Ảnh frame hero + trạng thái cuối ở `.memory/visual_ledger/after-motion/`.

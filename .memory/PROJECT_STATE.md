@@ -1,8 +1,8 @@
 # PROJECT STATE
 
-Cập nhật: 2026-10-25 · **Đã deploy UI v2** `main` @ `c4ae353` lên https://kimducanh27-cpu.github.io/so-on-gdct1/ · Bản trước `b3f89a1` (UI v1) là mốc rollback; nhánh `landing-page` giữ nguyên tại `b3f89a1` · Nguồn gốc: repo `kimducanh27-cpu/so-on-gdct1` @ `e4cac8c` · T-DOC-01, T-DEPLOY-01 và T-UI-01..07 done-verified.
+Cập nhật: 2026-10-26 · **Đã deploy Motion v3 + hard review** `main` @ `2671b02` lên https://kimducanh27-cpu.github.io/so-on-gdct1/ (SW v8) · Trước đó UI v2 @ `c4ae353`; UI v1 `b3f89a1` là mốc rollback; nhánh `landing-page` giữ `b3f89a1` · Nguồn gốc repo `kimducanh27-cpu/so-on-gdct1` @ `e4cac8c` · T-DOC-01, T-DEPLOY-01/02, T-UI-01..07 và T-MOTION-01..10 done-verified.
 
-**Motion v3 local RC (2026-10-25):** working tree có GSAP 3.15 tự host + hero CSS + app motion + SW `gdct1-v8`; sau hard review đã sửa CTA fixed, feedback scroll, tap-target 44px, topbar 320. `verify.sh` exit 0, motion-audit 46/46, LHCI local Perf 0.98 / LCP median 2,375ms / CLS 0. **Chưa commit/push/deploy**; live vẫn là UI v2 `c4ae353`.
+**Đã deploy Motion v3 + hard review (2026-10-26):** `main` @ `2671b02`, SW `gdct1-v8`, live https://kimducanh27-cpu.github.io/so-on-gdct1/ đã xác minh. Live LHCI Perf 1.0, LCP median 1,354ms, TBT 0, CLS 0; live smoke Chromium/Firefox/SW/motion/pa11y pass. T-DEPLOY-02 done-verified. Lịch sử UI v2 `c4ae353` giữ bên dưới.
 
 ## Stack & môi trường
 
@@ -50,7 +50,7 @@ Route app: `app/#/today|study|done|library|check|stats|settings|exam-setup`; m�
 - Bằng chứng thị giác: `.memory/visual_ledger/after-ui-v2/` 14 ảnh (landing 320/390/768/1280, 404-390, 7 route app 390 + today 1280), console 0 error, không overflow; LEDGER README ghi before/after.
 - Không đổi dữ liệu, id câu, khóa localStorage, hành vi tính năng; chỉ CSS/markup/copy trình bày và cache SW.
 
-## Motion v3 (2026-10-25) — local RC
+## Motion v3 + hard review (2026-10-25/26) — deployed 2026-10-26
 
 - **Hero landing CSS-only:** `mo-rise`/`mo-line`/`mo-scan`/`mo-flag`/`mo-pen` chạy ngay khi CSS tải; H1 3 line stagger, exam fields, lede/actions, sheet-card, grid scan, rail 20 ngày, 7 cờ, pen ellipse. Không có nội dung/LCP phải chờ JS.
 - **GSAP tự host:** `assets/vendor/gsap.min.js` 72,927B + `ScrollTrigger.min.js` 44,575B; `assets/motion.js` 4,151B nạp vendor **sau `load`** rồi bật ScrollTrigger batch once, margin progress, parallax 8px `(pointer:fine)` ≥761px, focusin reveal.
@@ -59,7 +59,7 @@ Route app: `app/#/today|study|done|library|check|stats|settings|exam-setup`; m�
 - **LCP:** GSAP defer trong critical path cho LCP 2,616ms → hero CSS + vendor lazy: **2,375ms median**, Perf 0.98; không nới ngưỡng.
 - **SW:** `gdct1-v8` 36 entry, gồm `assets/motion.js` + `assets/vendor/gsap.min.js`; migration v7→v8 xoá v7, giữ cache `landing-probe`; offline reload app render 1,147 ký tự.
 - **QA:** `verify.sh` exit 0; `motion-audit` 46/46 (reduce 0 animation, no-JS, block GSAP, app gating/bars/sheet, negative control); LHCI local 3 run Perf 0.98, A11y/BP/SEO 1, LCP median 2,375ms, TBT 20ms, CLS 0.
-- **Chưa làm:** commit/push/deploy; WebKit/iOS motion; PWA cài thật/đè bản cũ; low-end Android; zoom 400%.
+- **Đã deploy `2671b02`**; live v8. **Chưa kiểm:** WebKit/iOS motion; PWA cài thật/đè bản cũ; low-end Android; zoom 400%.
 
 ### Hard review UI fixes (2026-10-25)
 
@@ -198,12 +198,12 @@ UI v2 (2026-10-25):
 - Live xác nhận landing mới (form strip, bảng 100 ô, CTA), app render 8 route, 404 tùy biến, OG 131,423 B, SW `gdct1-v5` và cache đúng scope. Chi tiết bằng chứng ở mục QA gate “Live UI v2”.
 - Lighthouse live UI v2: Perf 1.0 cả 3 run, A11y/BP/SEO 1, LCP median 1,207 ms, TBT/CLS 0.
 
-### Motion v3 (2026-10-25) — local RC, chưa deploy
+### Deploy Motion v3 + hard review (T-DEPLOY-02) — done 2026-10-26
 
-- Working tree: GSAP vendor + hero CSS + app motion + SW `gdct1-v8`; `verify.sh` exit 0, motion-audit 46/46, LHCI local 0.98/LCP 2,375ms/CLS 0; SW migration/offline pass.
-- **Chưa commit, chưa push, chưa deploy.** Live vẫn UI v2 `c4ae353`; `landing-page` vẫn `b3f89a1`.
-- Khi được duyệt phát hành: commit motion → push `main` → Pages build → smoke live (LCP/live, SW v7, motion reduce, redirect); rollback `git revert <motion-commit>` + push, không force.
-- Giữ `gdct1-v8`; nếu sửa app shell sau đó phải bump v7.
+- Push `d0f962c..2671b02 main -> main` (commit phát hành `2671b02`); Pages build legacy từ `main` `/` cập nhật sau ~80 s. Live trả `gdct1-v8`, landing 26,690B, có pen path mới + icon tab checkbox, vendor/motion 200, 404 tùy biến.
+- **Live smoke:** `scripts/sw-audit.mjs` 5/5 (v8 36 entry, migration v7→v8, offline 1,147 ký tự); Chromium 5 viewport + 8 route + keyboard + reduce; motion-audit 46/46; pa11y 2/2; Firefox smoke pass.
+- **Live LHCI 3 run median:** Perf 1.0, A11y/BP/SEO 1, LCP 1,354ms, TBT 0, CLS 0, TTFB 24ms, total 152,364B; assertion median exit 0.
+- Rollback: `git revert 2671b02` + push (không force). Giữ `gdct1-v8`; nếu sửa app shell sau đó bump v9.
 
 ## Redirect legacy (T-REDIR-01)
 
@@ -217,9 +217,9 @@ UI v2 (2026-10-25):
 - Root `sw.js` kill-switch: `skipWaiting` + `clients.claim`, xoá `gdct1-v1..v3`, `unregister()`; không fetch handler.
 - Test Chrome 155 profile sạch: SW cũ root active + `gdct1-v3` 34 entry → sau update registration root bị xoá, cache rỗng; `gdct1-v4` của app còn nguyên.
 - App SW: scope `/app/`, cache `gdct1-v8` 36 entry (thêm motion + GSAP), controller `app/sw.js`; offline reload khi server tắt vẫn render.
-- Migration v6 → v7 (Chrome profile sạch, 2026-10-26): tạo `gdct1-v6` + `landing-probe`, unregister/reload để SW v6 cài/activate; sau đó còn `['gdct1-v8','landing-probe']`, v6 bị xoá; cache `gdct1-v8` có `assets/motion.js` + `assets/vendor/gsap.min.js`; offline reload app render 1,147 ký tự.
+- Migration v7 → v8 (Chrome profile sạch, 2026-10-26): tạo `gdct1-v7` + `landing-probe`, unregister/reload để SW v8 cài/activate; sau đó còn `['gdct1-v8','landing-probe']`, v7 bị xoá; cache `gdct1-v8` có `assets/motion.js` + `assets/vendor/gsap.min.js`; offline reload app render 1,147 ký tự.
 - Manifest `id: "../"` resolve `/so-on-gdct1/`, `start_url` resolve `/so-on-gdct1/app/#/today`.
-- Live UI v2: root `sw.js` trả kill-switch, `app/sw.js` trả `gdct1-v5`, manifest trả đúng nội dung; trang app live đăng ký SW scope `/app/` (controller xuất hiện sau ~1.5 s trong profile sạch). Local Motion v3 dùng `gdct1-v8` nhưng chưa deploy.
+- Live Motion v3 (2026-10-26): root `sw.js` kill-switch, `app/sw.js` trả `gdct1-v8`, manifest đúng, SW scope `/app/` active; live SW audit pass. UI v2 cũ `c4ae353` chỉ còn trong lịch sử.
 - **Chưa kiểm chứng:** không tạo bản cài trùng khi đã cài bản cũ (cần cài PWA thật); Safari/Firefox `id` limited availability.
 
 ## Dữ liệu & baseline
@@ -231,13 +231,13 @@ UI v2 (2026-10-25):
 
 ## Vấn đề mở / nợ
 
-- **Motion v3 đang là local RC, chưa commit/push/deploy**; live vẫn UI v2 `c4ae353`. Cần người dùng duyệt trước khi phát hành.
+- Motion v3 + hard review đã deploy `2671b02`; design review vẫn `awaiting_feedback` (chưa có accepted), deployment `deployed_verified`.
 - Motion chưa kiểm WebKit/iOS thật; PWA cài thật/đè bản cũ chưa kiểm; low-end Android chưa đo; zoom 400% chưa tự động.
 - LCP local 2,375ms (margin ~120ms dưới ngưỡng); nếu thêm script/asset vào critical path phải đo lại LHCI.
 - GSAP license “no charge” không phải OSI; đã ghi vendor + README/DECISIONS; nâng version phải cập nhật SHA + test.
 - Ảnh/OG: OG vẫn dùng `og-source.html` riêng (không có pen mark) nên không phải render lại; 4 ảnh app không đổi giao diện tĩnh.
 - 7 câu needsReview là backlog nội dung, ngoài phạm vi UI/motion.
-- README đã cập nhật SW v7; linkinator chỉ tính link nội bộ.
+- README đã cập nhật SW v8; linkinator chỉ tính link nội bộ.
 - App pa11y có 13 false positive do hash route bị coi là anchor thiếu; phạm vi a11y là landing + 404, ghi trong README.
 - 404 hard-code base `/so-on-gdct1/`.
 - Chưa test PWA cài thật/standalone thật; chưa kiểm bản cài cũ có bị trùng sau deploy UI v2; WebKit/iOS chưa có thiết bị.

@@ -1,6 +1,6 @@
-# UI_REVIEW — design_revision 03 · Motion v3 (local RC)
+# UI_REVIEW — design_revision 03 · Motion v3 + hard review (deployed 2026-10-26)
 
-Ngày: 2026-10-25 · Phạm vi: landing `/`, 404, 8 route app · Chế độ: `ui_rework` · Target: local release candidate · **Chưa deploy**; live vẫn revision 02 @ `c4ae353`.
+Ngày: 2026-10-25/26 · Phạm vi: landing `/`, 404, 8 route app · Chế độ: `ui_rework` · Target: release candidate · **Đã deploy** `2671b02` (SW v8); design review **awaiting_feedback**.
 
 ## 0. Revision 03 — Motion v3 (yêu cầu mới)
 
@@ -65,7 +65,7 @@ Ngày: 2026-10-25 · Phạm vi: landing `/`, 404, 8 route app · Chế độ: `u
 **Bằng chứng hard review:** UI review 320/390/1280 (landing + 8 route + study/feedback/sheet) — 0 overflow, 0 visible target <44 (chỉ còn input file ẩn), console 0 error; motion-audit **46/46**; `verify.sh` exit 0. Ảnh: `.memory/visual_ledger/after-hard-review/` (gồm crop `pen-*`, `tab-active-390`, `tab-inactive-390`).
 
 ### Trạng thái
-`local release candidate` · design review **awaiting_feedback** · deployment_state **not_deployed**. Revision 02 vẫn là bản live `c4ae353`; rollback motion = revert commit motion (không force push).
+`deployed_verified` 2026-10-26 @ `2671b02` · design review **awaiting_feedback** · live LHCI Perf 1.0 / LCP 1,354ms / TBT 0 / CLS 0; live smoke Chromium/Firefox/SW/motion/pa11y pass. Revision 02 `c4ae353` chỉ còn lịch sử; rollback = `git revert 2671b02` (không force push).
 
 ---
 

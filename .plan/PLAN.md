@@ -194,9 +194,12 @@ project:
 
 - Mục tiêu: nâng visual/motion landing + app, giữ site tĩnh/0 third-party/a11y/PWA, LCP ≤2.5s.
 - Chốt: GSAP 3.15 core + ScrollTrigger tự host; landing expressive, app subtle; hero CSS-only; GSAP lazy sau `load`; SW `gdct1-v8`; không deploy.
-- Kết quả: `verify.sh` exit 0; motion-audit 46/46; LHCI local 0.98/LCP 2,375ms/CLS 0; SW migration + offline pass.
+- Kết quả: `verify.sh` exit 0; motion-audit 46/46; LHCI local 0.98/LCP 2,375ms/CLS 0; SW migration + offline pass. **Đã deploy `2671b02`**; live LHCI 1.0/LCP 1,354ms/CLS 0.
 - Chi tiết task/evidence: `.plan/TASKS.md` Phase 3, `.memory/PROJECT_STATE.md` Motion v3, `.memory/UI_REVIEW.md` revision 03.
 
 ### Hard review sau Motion v3 (2026-10-25)
 - Sửa CTA “Câu tiếp” bị khuất do transform `.view`; feedback scroll giữ option; tap-target ≥44; topbar/nav 320.
 - Evidence: motion-audit 46/46, UI review 320/390/1280, verify exit 0; không deploy.
+
+### Deploy Motion v3 + hard review (T-DEPLOY-02) — done 2026-10-26
+- Push `2671b02`; Pages build ~80 s; live SW v8; smoke Chromium/Firefox/SW/motion/pa11y; LHCI live 1.0/LCP 1,354ms/CLS 0. Rollback `git revert 2671b02`.

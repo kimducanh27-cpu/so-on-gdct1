@@ -229,7 +229,7 @@ Tổng: 13 task (6 M, 7 S). Nền = 3/13 = 23% (< 25%). Không task XL, không U
 - **T-MOTION-02..05:** hero chuyển sang CSS keyframes để không chặn LCP; GSAP/ScrollTrigger nạp sau `load`; ScrollTrigger batch once; margin progress; parallax 8px pointer fine ≥761; FAQ grid-rows; 404 pen slash; pen ellipse SVG. LCP 2,616 → **2,375ms**.
 - **T-MOTION-06..07:** `app/assets/motion.js` 5,153B; hook `beforeRender/enter(route,qid)`; pick/filter/search không replay; progress bar scaleX; feedback pen ✓/✕; sheet open 200ms close đồng bộ; stats cells/bars.
 - **T-MOTION-08:** `scripts/motion-audit.mjs` 46 check pass; `verify.sh` gọi giữa Chromium và Firefox, fail-closed.
-- **T-MOTION-10:** `bash scripts/verify.sh` exit 0 (html-validate 0, check-data 60, contrast 15, pa11y 2/2, Chromium + Firefox + Marionette, motion 46/46); LHCI local 3 run Perf 0.98, A11y/BP/SEO 1, LCP median 2,375ms, TBT 20ms, CLS 0; SW v7→v8 migration + offline pass. **Chưa commit/push/deploy.**
+- **T-MOTION-10:** `bash scripts/verify.sh` exit 0 (html-validate 0, check-data 60, contrast 15, pa11y 2/2, Chromium + Firefox + Marionette, motion 46/46); LHCI local 3 run Perf 0.98, LCP median 2,375ms, TBT 20ms, CLS 0; SW v7→v8 migration + offline pass. **Đã deploy** `2671b02` (T-DEPLOY-02).
 - **Blocked:** WebKit/iOS motion, PWA cài thật/đè bản cũ, low-end Android, zoom 400% (không có runtime/thiết bị).
 
 ### Hard review fixes (2026-10-25) — sau Motion v3
@@ -244,3 +244,11 @@ Tổng: 13 task (6 M, 7 S). Nền = 3/13 = 23% (< 25%). Không task XL, không U
 | T-FIX-06 | Icon tab “Đáp án” → checkbox; bump cache v8 + migration | trung | done-verified |
 
 - Evidence: UI review 320/390/1280 (landing + 8 route + study/feedback/sheet): 0 overflow, 0 visible target <44 (chỉ input file ẩn), console 0 error; motion-audit **46/46** (thêm CTA, feedback context, FAQ, 5 target check); `verify.sh` exit 0; ảnh `.memory/visual_ledger/after-hard-review/`.
+
+### Deploy Motion v3 + hard review (T-DEPLOY-02) — done 2026-10-26
+
+- Push `d0f962c..2671b02 main -> main`; commit phát hành **`2671b02`**; Pages build legacy từ `main` `/` xong sau ~80 s.
+- Live `app/sw.js` = `gdct1-v8`, landing 26,690B có pen path + icon tab mới; app/manifest/vendor/motion 200; 404 tùy biến.
+- Live smoke: `scripts/sw-audit.mjs` 5/5; Chromium 5 viewport + 8 route + keyboard + reduce; motion-audit 46/46; pa11y 2/2; Firefox smoke pass.
+- Live LHCI 3 run median: Perf 1.0, A11y/BP/SEO 1, LCP 1,354ms, TBT 0, CLS 0, TTFB 24ms, total 152,364B; assertion median exit 0.
+- Rollback: `git revert 2671b02` + push (không force). Giữ cache v8; sửa app shell sau đó bump v9.
