@@ -1,0 +1,11 @@
+GSAP 3.15.0 — self-hosted vendor file (app scope)
+-------------------------------------------------
+
+File and SHA-256 (downloaded 2026-10-25 from https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/):
+- gsap.min.js  72,927 bytes  92bb9a96476f983d212a2bc4f54c889039c1696dd4461d40a736860938570fbb
+
+License: GreenSock Standard "no charge" license — https://gsap.com/standard-license
+Source: https://github.com/greensock/GSAP
+Copyright 2026, GreenSock. All rights reserved. Bundled unmodified; the copyright/license
+headers inside the minified file are retained. This is not an OSI-approved license.
+GSAP is free of charge for this project's use (website built with GSAP).

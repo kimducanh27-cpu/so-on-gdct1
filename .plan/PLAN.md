@@ -189,3 +189,14 @@ project:
 **Rủi ro:** mất tương phản khi tăng mật độ đỏ; QA script phụ thuộc markup cũ; ảnh/OG lệch; SW phục vụ CSS cũ; layout 320px với bảng 10 cột. Giảm thiểu: giữ selector QA, đo contrast, chụp 5 viewport, bump cache + test offline.
 
 **Trạng thái 2026-10-25:** T-UI-01..07 done-verified. `verify.sh` exit 0; LHCI local 3 run Perf 0.99, LCP median 1,955 ms; LHCI live 3 run Perf 1.0, LCP median 1,207 ms; SW `gdct1-v5` migration + offline pass. Đã push `main` @ `c4ae353`; live https://kimducanh27-cpu.github.io/so-on-gdct1/. Rollback `git revert c4ae353` + push; `landing-page` giữ `b3f89a1`.
+
+## Phase 3 — Motion v3 (2026-10-25, local RC)
+
+- Mục tiêu: nâng visual/motion landing + app, giữ site tĩnh/0 third-party/a11y/PWA, LCP ≤2.5s.
+- Chốt: GSAP 3.15 core + ScrollTrigger tự host; landing expressive, app subtle; hero CSS-only; GSAP lazy sau `load`; SW `gdct1-v8`; không deploy.
+- Kết quả: `verify.sh` exit 0; motion-audit 46/46; LHCI local 0.98/LCP 2,375ms/CLS 0; SW migration + offline pass.
+- Chi tiết task/evidence: `.plan/TASKS.md` Phase 3, `.memory/PROJECT_STATE.md` Motion v3, `.memory/UI_REVIEW.md` revision 03.
+
+### Hard review sau Motion v3 (2026-10-25)
+- Sửa CTA “Câu tiếp” bị khuất do transform `.view`; feedback scroll giữ option; tap-target ≥44; topbar/nav 320.
+- Evidence: motion-audit 46/46, UI review 320/390/1280, verify exit 0; không deploy.

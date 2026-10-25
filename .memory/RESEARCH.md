@@ -1,5 +1,42 @@
 # RESEARCH — Landing page & PWA migration
 
+## 2026-10-25 — Motion v3: engine, license, size, browser support
+
+**Câu hỏi trước khi tra:**
+- **RQ-M1:** GSAP có miễn phí cho site này và license có phải OSI không?
+- **RQ-M2:** Với 0 third-party và LCP ≤2.5s, nên dùng engine nào trong critical path?
+- **RQ-M3:** View Transitions / CSS scroll-driven animations có đủ cross-browser để làm route transition và reveal không?
+- **RQ-M4:** Thư viện nào bị loại vì nặng/không phù hợp bản sắc?
+
+**Bảng bằng chứng (đo 2026-10-25):**
+
+| # | Nguồn | Dữ kiện | Loại evidence | Áp dụng / loại |
+|---|---|---|---|---|
+| 1 | [greensock/GSAP](https://github.com/greensock/GSAP) · [licensing](https://gsap.com/licensing/) | npm `gsap@3.15.0`; license “Standard no charge”, **không OSI**; 29,725★, push 2026-04-13; core 72,927B raw / **28,272B gzip**; ScrollTrigger 44,575 / **17,983**; SplitText 7,732 / **3,643** | docs/source + local_reproduced | **Chọn** core + ScrollTrigger tự host; **loại SplitText** (đã có 3 `.line`, tránh re-split/a11y) |
+| 2 | [greensock/gsap-skills](https://github.com/greensock/gsap-skills) | MIT; 17,117★; push 2026-07-29; 59KB | docs/source | Chỉ tham khảo pattern, không ship |
+| 3 | [darkroomengineering/lenis](https://github.com/darkroomengineering/lenis) | MIT; 16,873★; push 2026-10-23; 18,815B raw / **5,426B gzip** | docs/source + local_reproduced | **Loại**: scroll hijack, xung đột `scroll-behavior:smooth`/AT |
+| 4 | [lucide-icons/lucide](https://github.com/lucide-icons/lucide) | **ISC** (LICENSE xác nhận); 25,279★; push 2026-10-25 | docs/source | **Loại runtime**: tự vẽ 8 icon nét 1.5px cùng ngôn ngữ phiếu |
+| 5 | [airbnb/lottie-web](https://github.com/airbnb/lottie-web) | MIT; 32,271★; push 2025-09-01; **76,568B gzip** | docs/source + local_reproduced | **Loại**: quá nặng, không cần scene JSON |
+| 6 | [tsparticles/tsparticles](https://github.com/tsparticles/tsparticles) | MIT; 8,995★; push 2026-10-25; engine **24,343B gzip** | docs/source + local_reproduced | **Loại**: trang trí, lệch “phiếu thi”, reduced-motion khó |
+| 7 | [motiondivision/motion](https://github.com/motiondivision/motion) | MIT; 34,521★; push 2026-10-23; **46,492B gzip** | docs/source + local_reproduced | **Loại**: trùng vai trò GSAP, không cài 2 engine |
+| 8 | [juliangarnier/anime](https://github.com/juliangarnier/anime) | MIT; 73,818★; push 2026-08-21; **29,118B gzip** | docs/source + local_reproduced | **Loại**: GSAP hợp ScrollTrigger hơn |
+| 9 | [lukePeavey/SplitType](https://github.com/lukePeavey/SplitType) | Không metadata license; 732★; push 2023-12-03 | docs/source | **Loại**: license không rõ, ngừng cập nhật, dễ lặp text cho SR |
+| 10 | [rive-app/rive-wasm](https://github.com/rive-app/rive-wasm) | MIT; 1,014★; push 2026-10-24; WASM runtime | docs/source | **Loại**: nặng, không có nhu cầu state machine |
+| 11 | [Can I use — View Transitions](https://caniuse.com/view-transitions) | Same-document: Chrome/Edge 111+, Firefox 144+, Safari/iOS 18+; cross-document: Chrome 126+, Safari 18.2+, Firefox chưa | docs/source | **Hoãn** route transition; app dùng entrance GSAP an toàn, ghi backlog |
+| 12 | [Can I use — scroll-driven animations](https://caniuse.com/wf-scroll-driven-animations) · [MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/animation-timeline) | `animation-timeline` chỉ Chromium đầy đủ; Firefox/Safari chưa phổ quát | docs/source | **Không dựa vào**; dùng IntersectionObserver/ScrollTrigger |
+| 13 | Lighthouse local 3 run + `bash scripts/verify.sh` | LCP 2,616ms khi GSAP defer trong critical path → 2,375ms khi hero CSS + vendor lazy; Perf 0.98; motion-audit 46/46; SW v7→v8 migration/offline pass | project_verified | Quyết định kiến trúc hero CSS + lazy vendor |
+
+**Kết luận áp dụng:**
+1. GSAP core + ScrollTrigger tự host, nạp **sau `load`**; license/SHA ghi trong vendor, không CDN.
+2. Hero landing dùng CSS keyframes để LCP không chờ JS; GSAP cho scroll/micro.
+3. App dùng GSAP core + gating route/qid; SW `gdct1-v8`; View Transitions để backlog.
+
+**Không áp dụng:** SplitText, Lenis, Lottie, tsParticles, Motion, anime, SplitType, Rive; không pinning/horizontal/custom cursor/particle/WebGL.
+
+**Giới hạn evidence:** star/push qua GitHub API; license đọc file/metadata; size đo bằng tải jsDelivr + `gzip -c | wc -c`; LCP/verify là `project_verified` trên local-test, không phải production; WebKit/iOS `blocked`.
+
+---
+
 Ngày: 2026-10-24 · Phạm vi: landing mới + chuyển app sang `/app/` · Ngưỡng: brownfield feature ≥ 2 mục → đạt 3.
 
 ## Câu hỏi (viết trước khi tra)

@@ -6,7 +6,7 @@
 - **Trước khi làm task mới: đọc `.plan/TASKS.md`, kiểm DoR mục 13.**
 - Đọc `.memory/PROJECT_STATE.md`, `DECISIONS.md`, `RESEARCH.md`, `CONTENT_MAP.md`.
 - Xác định package manager từ lockfile: repo **không có**; không tự thêm.
-- Baseline hiện tại: `node --check` 4 file JS, JSON manifest, đếm dữ liệu; không có lint/typecheck/test/build.
+- Baseline hiện tại: `node --check` toàn bộ JS/MJS (gồm vendor GSAP), JSON manifest, đếm dữ liệu; QA động qua `bash scripts/verify.sh` (Chromium, Firefox, motion-audit); không có lint/typecheck/build.
 - Không sửa file chưa đọc; không refactor ngoài task.
 
 ## Lệnh
@@ -34,7 +34,7 @@ Không có `dev`, `build`, `test`, `lint` script. Không bịa lệnh.
 
 ## Luật
 
-- Giữ site tĩnh; không thêm dependency runtime/build. Dev tool mới phải có mục trong `RESEARCH.md` + `DECISIONS.md`.
+- Giữ site tĩnh; không thêm dependency runtime/build. **Ngoại lệ đã duyệt 2026-10-25:** GSAP 3.15.0 core + ScrollTrigger tự host trong `assets/vendor/` và `app/assets/vendor/` cho motion; không CDN, không thêm engine khác; license + SHA-256 ghi trong `LICENSE-GSAP.txt`. Dev tool mới phải có mục trong `RESEARCH.md` + `DECISIONS.md`.
 - Cấu trúc URL: landing `/`, app `/app/`; giữ redirect `/#/...` → `/app/#/...`.
 - Không đổi id câu (`gdct1-001…100`), không đổi khóa `so-on-gdct1.v1`, không sửa nội dung đáp án.
 - Không sửa `sw.js`/manifest mà không test migration theo `T-PWA-01`.

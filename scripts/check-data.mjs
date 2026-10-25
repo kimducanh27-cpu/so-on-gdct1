@@ -65,7 +65,8 @@ check(manifest.start_url === './#/today', 'manifest start_url', manifest.start_u
 check(manifest.scope === './', 'manifest scope', manifest.scope);
 
 const appSw = read('app/sw.js');
-check(appSw.includes("'gdct1-v5'"), 'app SW cache gdct1-v5');
+check(appSw.includes("'gdct1-v8'"), 'app SW cache gdct1-v8');
+check(appSw.includes('assets/vendor/gsap.min.js'), 'app SW precache GSAP');
 
 const rootSw = read('sw.js');
 check(!/addEventListener\(\s*['"]fetch['"]/.test(rootSw), 'root SW không có fetch handler');
@@ -109,6 +110,23 @@ check(shots.every((name) => fileSize(`assets/landing/${name}`) <= 150 * 1024), '
 
 check(fileSize('assets/landing.js') <= 170 * 1024, 'JS landing ≤170KB', `${fileSize('assets/landing.js')} B`);
 check(fileSize('assets/landing.css') <= 60 * 1024, 'CSS landing ≤60KB', `${fileSize('assets/landing.css')} B`);
+check(fileSize('app/assets/app.css') <= 60 * 1024, 'CSS app ≤60KB', `${fileSize('app/assets/app.css')} B`);
+check(fileSize('app/assets/app.js') <= 300 * 1024, 'JS app ≤300KB', `${fileSize('app/assets/app.js')} B`);
+
+const vendor = ['assets/vendor/gsap.min.js', 'assets/vendor/ScrollTrigger.min.js', 'app/assets/vendor/gsap.min.js'];
+check(vendor.every((p) => fs.existsSync(new URL(p, root))), 'đủ file vendor GSAP');
+check(fileSize('assets/vendor/gsap.min.js') <= 80 * 1024, 'gsap.min.js ≤80KB', `${fileSize('assets/vendor/gsap.min.js')} B`);
+check(fileSize('assets/vendor/ScrollTrigger.min.js') <= 50 * 1024, 'ScrollTrigger ≤50KB', `${fileSize('assets/vendor/ScrollTrigger.min.js')} B`);
+const vendorLicense = read('assets/vendor/LICENSE-GSAP.txt');
+check(vendorLicense.includes('gsap.com/standard-license'), 'vendor license GSAP');
+check(read('app/assets/vendor/LICENSE-GSAP.txt').includes('gsap.com/standard-license'), 'app vendor license GSAP');
+check(landing.includes('assets/motion.js'), 'landing nạp motion');
+check(read('assets/motion.js').includes('gsap.min.js') && read('assets/motion.js').includes('ScrollTrigger.min.js'), 'motion lazy-load GSAP + ScrollTrigger');
+check(appSw.includes('assets/motion.js'), 'app SW precache motion');
+check(fileSize('assets/motion.js') <= 20 * 1024, 'motion landing ≤20KB', `${fileSize('assets/motion.js')} B`);
+check(fileSize('app/assets/motion.js') <= 16 * 1024, 'motion app ≤16KB', `${fileSize('app/assets/motion.js')} B`);
+check(read('app/assets/motion.js').includes('GDCTMotion'), 'app motion export GDCTMotion');
+check(read('app/assets/motion.js').includes('prefers-reduced-motion'), 'app motion tôn trọng reduced-motion');
 
 const failed = checks.filter((c) => !c.ok);
 if (failed.length) {

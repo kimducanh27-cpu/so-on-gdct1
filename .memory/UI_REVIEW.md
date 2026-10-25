@@ -1,4 +1,75 @@
-# UI_REVIEW — design_revision 02 · “Phiếu thi & bút đỏ”
+# UI_REVIEW — design_revision 03 · Motion v3 (local RC)
+
+Ngày: 2026-10-25 · Phạm vi: landing `/`, 404, 8 route app · Chế độ: `ui_rework` · Target: local release candidate · **Chưa deploy**; live vẫn revision 02 @ `c4ae353`.
+
+## 0. Revision 03 — Motion v3 (yêu cầu mới)
+
+**Kích hoạt:** người dùng yêu cầu nâng visual/UI/UX + motion toàn diện (hero sequence, scroll reveal, micro-interaction, icon/illustration, 10+ ý tưởng, hard review). Revision 02 đã deploy; không reset lịch sử.
+
+### Audit feedback mới
+| ID | Vấn đề | Mức | Hướng xử lý |
+|---|---|---|---|
+| F-UI-11 | Landing gần như không có motion; hero “phiếu thi” đứng yên, các section chỉ nối tiếp | cao | Hero CSS sequence + pen/grid/rail; section reveal riêng; margin progress |
+| F-UI-12 | App replay `.q-wrap`/`.feedback` mỗi lần pick/filter/search; entrance không gắn với chuyển câu | cao | `GDCTMotion` gating route/qid; bỏ `qin`/`fin`; context cleanup |
+| F-UI-13 | Thanh tiến độ viết width cuối trong markup nên transition không chạy; sheet đóng/mở giật | trung | Bar scaleX từ width cũ; sheet open 200ms, close đồng bộ |
+
+### Giữ / đổi
+- **Giữ:** nội dung, số liệu, token giấy/mực/đỏ, font, URL, route, `so-on-gdct1.v1`, id câu, CTA `Mở sổ ôn ngay`, skip link, 0 third-party, PWA.
+- **Đổi:** thêm motion layer + SVG pen mark; hero text/card CSS-only; GSAP lazy sau `load`; app motion module; SW `gdct1-v8`; motion-audit.
+
+### Motion contract 03 (thay contract rev 02 §4)
+- Mức: **landing expressive, app subtle**. Tất cả animation là thiết kế mới cho “phiếu thi & bút đỏ”; không sao chép demo.
+- **Hero CSS:** `exam-field` 220ms (delay .05/.1); H1 line 320/480ms (0/.04/.1); lede 220ms (.12); actions 220ms (.18); sheet-card 480ms (.14); grid scan 480ms (+.06); rail 500ms (.38); 7 flags 180ms (.6); pen ellipse 700ms (.24) + 600ms (.28). Chỉ transform/opacity/clip-path/stroke-dashoffset.
+- **Scroll:** `ScrollTrigger.batch`, `once`, start `top 85%`, 320ms stagger 60ms; `focusin` mở reveal (160ms); margin rule scrub .2; parallax ảnh 8px scrub .4 chỉ `(pointer:fine)` + ≥761px.
+- **App:** route fade 180ms **không transform** (để `.study-cta` fixed đúng); question enter 180ms; feedback 220ms + pen ✓/✕ draw; option press 120ms; bar 320ms scaleX; sheet open 160/200ms, **close đồng bộ**; toast 160ms; feedback scroll căn option đã chọn dưới sticky top; target control ≥44px; không scroll reveal nội dung.
+- **LCP guard:** hero không phụ thuộc JS; GSAP/ScrollTrigger nạp sau `load`; text/card không bị `opacity:0` chờ vendor. LCP local 2,616ms (GSAP trong critical path) → **2,375ms median** sau khi đổi; Perf 0.98.
+- **Reduced motion:** CSS `@media no-preference`; `gsap.matchMedia`/listener dọn tween; `getAnimations()` = 0 khi reduce; live switch pass.
+- **No-JS / block GSAP:** hero CSS vẫn chạy, CTA và toàn bộ nội dung hiện; app guard `GDCTMotion`; negative control pass.
+- **Loại:** pinning/horizontal/particle/custom cursor/tilt/Lottie/Lenis/SplitText; View Transitions hoãn (same-doc Chrome 111+/FF 144+/Safari 18+, nhưng router/focus/test chưa cần đánh đổi).
+
+### Motion spec (MO-*) — revision 03
+
+| MO | Target / V | Kind & trigger | Property / owner | Once / replay | Interrupt / cancel | Reduce / fallback | Cleanup |
+|---|---|---|---|---|---|---|---|
+| MO-HERO-01 | Hero meta, H1 lines, lede, actions, card / V-MOTION-01 | tween on load, CSS keyframes | opacity + transform; CSS | once per load | reload restarts; no JS interrupt | reduce: none; CSS vẫn hiện | n/a |
+| MO-HERO-02 | Pen ring / V-UI-18 | tween on load, CSS stroke | stroke-dashoffset; CSS | once | no reverse; final path | reduce: path đầy đủ; không JS | n/a |
+| MO-HERO-03 | Grid/rail/flags / V-MOTION-01 | tween on load, CSS clip/scale | clip-path/opacity/transform; CSS | once | n/a | reduce: final | n/a |
+| MO-SCROLL-01 | Section reveal / V-MOTION-01 | scroll batch, ScrollTrigger | opacity/transform; GSAP | once/element | focusin mở sớm; no reverse | reduce: không tạo trigger; engine fail: hiện | kill trigger, `clearProps` khi reduce |
+| MO-SCROLL-02 | Margin progress/parallax / V-MOTION-01 | scroll scrub, ScrollTrigger | transform; GSAP | scroll-linked | resize → matchMedia revert | reduce/pointer coarse: tắt | `mm.revert()` |
+| MO-UI-01 | FAQ open / V-MOTION-01 | native details toggle | grid-template-rows; CSS | each open | close native; no stale | reduce: instant | native |
+| MO-APP-01 | Route view / V-UI-14 | hashchange render, GSAP | opacity; GSAP context | route change | rapid hash → context revert | reduce: không motion; engine fail: instant | `ctx.revert()` |
+| MO-APP-02 | Question/feedback/bars / V-UI-15 | render + qid/feedback key | opacity/transform/stroke; GSAP | qid/route/feedback once | next nhanh → context revert | reduce: không; engine fail: instant | `ctx.revert`/`clear` |
+| MO-APP-03 | Sheet/toast / V-MOTION-01 | open/class | opacity/transform; GSAP | open once; close sync; toast each show | close sync; no animationend dependency | reduce: instant | no persistent listener |
+
+- Duration token: `--mo-120…700`; GSAP đọc token qua `getComputedStyle`; CSS dùng trực tiếp. Không pin/scrub toàn trang; parallax chỉ `(pointer:fine)` ≥761px. Negative control: block GSAP → app không entrance, nội dung vẫn dùng (V-NEG-01).
+
+### Bằng chứng revision 03
+- `bash scripts/verify.sh` exit 0: html-validate 0, check-data 60, contrast 15, pa11y 2/2, Chromium 5 viewport + keyboard + reduce, **motion-audit 46/46**, Firefox BiDi + Marionette.
+- LHCI local 3 run: Perf **0.98**, A11y/BP/SEO **1**, LCP median **2,375ms** (2,370–2,385), TBT **20ms**, CLS **0**, TTFB 1ms, total 275,386B (chưa gzip; live sẽ nén).
+- SW `gdct1-v8`: 36 entry gồm app + motion + GSAP; migration v7→v8 xoá v7, giữ cache ngoài; offline reload app render 1,147 ký tự.
+- Ảnh: `.memory/visual_ledger/after-motion/` (hero 150/450/1050ms + final, landing 320/390/768/1280, 404, app) + `.memory/visual_ledger/qa/` cập nhật.
+- Chưa xác minh: WebKit/iOS motion, PWA cài thật/đè bản cũ, low-end Android, zoom 400%, field data.
+
+### Hard review 2026-10-25 — lỗi tìm thấy sau Motion v3
+
+| ID | Vấn đề | Mức | Root cause | Cách sửa / kiểm |
+|---|---|---|---|---|
+| F-UI-14 | Nút “Câu tiếp” bị khuất/đặt sai trên mobile sau khi vào Study | **cao** | Route entrance đặt `transform` lên `.view`; transform tạo containing block cho `.study-cta` (`position:fixed`), nên CTA fixed theo view và chui dưới tabbar | Bỏ translate khỏi view entrance, chỉ fade + `clearProps:'transform'`; regression check trong motion-audit xác nhận `transform:none`, CTA trên tabbar |
+| F-UI-15 | Auto-scroll feedback làm mất option vừa chọn và question | **cao** | `scrollIntoView({block:'center'})` + smooth scroll không tôn trọng reduce | Một scroll target duy nhất: căn option `.is-selected` ngay dưới `.study-top`; feedback nằm dưới; `behavior:auto` khi reduce; check `elementFromPoint` không bị che |
+| F-UI-16 | Nhiều tap-target app <44px | **trung** | `.tool` 38, `.icon-btn` 40, `.chip/.btn-sm` ~35, `.link-btn` 21, select/time 38, switch 25 | Nâng control lên ≥44; switch giữ track 44×25 nhưng hit area 44×44; thêm 5 check target trong motion-audit (study/sheet/today/library/check/settings) |
+| F-UI-17 | 320px: brand “Sổ Ôn” wrap 2 dòng, nav “Sổ” 41px | trung | Topbar thiếu chỗ sau khi target lớn hơn; nav thiếu min-width | `white-space:nowrap`; ≤360 ẩn dot/code brand; nav `min-width:44px`; UI review 320 không overflow |
+| F-UI-18 | Nét bút quanh “sổ” là hai ellipse chồng, cắt qua chữ/dấu, đỏ trên đỏ | **cao (thị giác)** | SVG là replaced element: `inset` + `width/height:auto` không kéo giãn, height thực chỉ 34.6px thay vì 71px; thêm ellipse thứ hai; chữ và nét cùng đỏ; leading H1 quá sát dấu phẩy dòng trên | Một path liền mạch có gap; `width/height:calc()` tường minh; chữ “sổ” mực + nét đỏ; tách dòng 3 bằng `margin-top:.30em`; ảnh cận cảnh trong ledger |
+| F-UI-19 | Icon tab “Đáp án”: check + hai gạch rời, khó đọc ở 20px | trung | Icon không theo hệ hình khối của tabbar | Đổi sang ô vuông + check (checkbox), cùng stroke 1.6; active đỏ; ảnh crop 4× trong ledger |
+| — | FAQ đóng “chiếm 22px” | — | Đây là box phantom của `::details-content`; item thực chỉ cao bằng summary + border (extra 1px), body height không đổi | Không sửa grid accordion; check mới đo `item - summary ≤2px` thay vì `getBoundingClientRect` của answer |
+
+**Bằng chứng hard review:** UI review 320/390/1280 (landing + 8 route + study/feedback/sheet) — 0 overflow, 0 visible target <44 (chỉ còn input file ẩn), console 0 error; motion-audit **46/46**; `verify.sh` exit 0. Ảnh: `.memory/visual_ledger/after-hard-review/` (gồm crop `pen-*`, `tab-active-390`, `tab-inactive-390`).
+
+### Trạng thái
+`local release candidate` · design review **awaiting_feedback** · deployment_state **not_deployed**. Revision 02 vẫn là bản live `c4ae353`; rollback motion = revert commit motion (không force push).
+
+---
+
+# Revision 02 (history) — UI v2 “Phiếu thi & bút đỏ”
 
 Ngày: 2026-10-25 · Phạm vi: landing `/` + 8 hash view của app `/app/` · Chế độ: `ui_rework` · Target: `release_candidate`.
 

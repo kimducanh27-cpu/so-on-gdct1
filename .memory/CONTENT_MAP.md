@@ -1,6 +1,8 @@
 # CONTENT MAP — Landing page
 
 Ngày 2026-10-25 · Không có placeholder `[[...]]`; nội dung lấy từ README, `app/data/*.js` và landing đã dựng.
+Motion v3 (2026-10-25) không đổi copy, số liệu hay URL; chỉ thêm lớp trình bày/chuyển động. Không có placeholder.
+
 Số liệu khớp dữ liệu: 100 câu · 70 ảnh · 6 nhóm · 20 ngày (24.10 → 12.11.2026) · 44 verified · 56 reference · 7 cần kiểm tra (cờ riêng, 2 verified + 5 reference).
 
 ## Landing

@@ -65,6 +65,7 @@
     if (!el) return;
     el.textContent = msg;
     el.classList.add('show');
+    if (window.GDCTMotion) window.GDCTMotion.toast(el);
     clearTimeout(toast._t);
     toast._t = setTimeout(function () { el.classList.remove('show'); }, 2600);
   }
@@ -581,7 +582,7 @@
     if (!st.exam && locked) {
       if (ans) {
         var good = picked === correctIdx;
-        html += '<div class="feedback ' + (good ? 'good' : 'bad') + '"><div class="fb-head">' + (good ? 'Chính xác' : 'Chưa đúng') + ' · ' + esc(answerLevelLabel(ans)) + '</div>';
+        html += '<div class="feedback ' + (good ? 'good' : 'bad') + '"><div class="fb-head">' + (good ? checkIcon() : crossIcon()) + '<span>' + (good ? 'Chính xác' : 'Chưa đúng') + ' · ' + esc(answerLevelLabel(ans)) + '</span></div>';
         html += '<p class="fb-answer">Đáp án: <b>' + LETTERS[correctIdx] + '. ' + esc(q.options[correctIdx]) + '</b></p>';
         if (picked != null && !good) html += '<p class="fb-note">Bạn chọn ' + LETTERS[picked] + '.</p>';
         if (ans.explanation) html += '<p class="mt-8">' + esc(ans.explanation) + '</p>';
@@ -979,6 +980,7 @@
     var focusables = sheet.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
     if (focusables.length) focusables[0].focus();
     ov.addEventListener('click', function (e) { if (e.target === ov) closeSheet(); });
+    if (window.GDCTMotion) window.GDCTMotion.sheetOpen(ov, sheet);
   }
   function closeSheet() {
     var ov = $('#overlay');
@@ -1100,10 +1102,17 @@
     }
     save();
     render();
-    // Đưa phần phản hồi / tự đánh giá vào tầm nhìn, tránh bị CTA cố định che khuất.
+    // Giữ option vừa chọn ngay dưới thanh sticky; feedback nằm ngay bên dưới.
     requestAnimationFrame(function () {
-      var el = document.querySelector('.feedback') || document.querySelector('.self-assess');
-      if (el && el.scrollIntoView) el.scrollIntoView({ block: 'center', behavior: 'smooth' });
+      var bar = document.querySelector('.study-top');
+      var selected = document.querySelector('.opt.is-selected');
+      if (!bar || !selected) return;
+      var calm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var br = bar.getBoundingClientRect();
+      var sr = selected.getBoundingClientRect();
+      var max = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+      var target = Math.min(Math.max(window.scrollY + sr.top - br.bottom - 8, 0), max);
+      window.scrollTo({ top: target, behavior: calm ? 'auto' : 'smooth' });
     });
   }
 
@@ -1316,6 +1325,7 @@
     var route = currentRoute();
     var app = $('#app');
     if (!app) return;
+    if (window.GDCTMotion) window.GDCTMotion.beforeRender();
     if (route === 'study') app.innerHTML = viewStudy();
     else if (route === 'done') app.innerHTML = viewDone();
     else if (route === 'library') app.innerHTML = viewLibrary();
@@ -1326,6 +1336,10 @@
     else app.innerHTML = viewToday();
     renderNav(route);
     afterRender(route);
+    if (window.GDCTMotion) {
+      var qid = route === 'study' && S.study && S.study.ids ? S.study.ids[S.study.i] : null;
+      window.GDCTMotion.enter(route, qid);
+    }
   }
 
   function afterRender(route) {

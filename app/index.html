@@ -49,7 +49,7 @@
 <nav class="tabbar" aria-label="Điều hướng dưới">
   <a href="#/today" data-route="today"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5M5.5 10v10h13V10"/></svg><span>Hôm nay</span></a>
   <a href="#/library" data-route="library"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5A1.5 1.5 0 0 1 5.5 4H19v16H5.5A1.5 1.5 0 0 1 4 18.5zM8 4v16"/></svg><span>Ôn tập</span></a>
-  <a href="#/check" data-route="check"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12.5 9 17l11-11"/><path d="M4 6h6M4 19h8"/></svg><span>Đáp án</span></a>
+  <a href="#/check" data-route="check"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="1"/><path d="M8 12.5 11 15.5 16.5 9"/></svg><span>Đáp án</span></a>
   <a href="#/stats" data-route="stats"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19V9m5 10V5m5 14v-7m5 7V8"/></svg><span>Sổ</span></a>
   <a href="#/settings" data-route="settings"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15.2a3.2 3.2 0 1 0 0-6.4 3.2 3.2 0 0 0 0 6.4Z"/><path d="M19.4 13a7.6 7.6 0 0 0 0-2l2-1.5-2-3.4-2.4 1a7.4 7.4 0 0 0-1.7-1L15 3.5h-6l-.3 2.6c-.6.2-1.2.6-1.7 1l-2.4-1-2 3.4L4.6 11a7.6 7.6 0 0 0 0 2l-2 1.5 2 3.4 2.4-1c.5.5 1.1.8 1.7 1l.3 2.6h6l.3-2.6c.6-.2 1.2-.6 1.7-1l2.4 1 2-3.4z"/></svg><span>Cài đặt</span></a>
 </nav>
@@ -58,8 +58,10 @@
 
 <noscript><div class="view"><div class="panel"><h1 class="display" style="font-size:40px">Cần JavaScript</h1><p class="lede mt-8">Sổ ôn chạy hoàn toàn bằng JavaScript để lưu tiến độ trên máy bạn. Hãy bật JavaScript rồi tải lại.</p></div></div></noscript>
 
-<script src="data/questions.js"></script>
-<script src="data/answers.js"></script>
-<script src="assets/app.js"></script>
+<script defer src="assets/vendor/gsap.min.js"></script>
+<script defer src="assets/motion.js"></script>
+<script defer src="data/questions.js"></script>
+<script defer src="data/answers.js"></script>
+<script defer src="assets/app.js"></script>
 </body>
 </html>

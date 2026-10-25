@@ -1,11 +1,13 @@
 /* Sổ Ôn GDCT1 — offline app shell */
-var CACHE = 'gdct1-v5';
+var CACHE = 'gdct1-v8';
 var SHELL = [
   './',
   'index.html',
   'manifest.webmanifest',
   'assets/app.css',
   'assets/app.js',
+  'assets/motion.js',
+  'assets/vendor/gsap.min.js',
   'data/questions.js',
   'data/answers.js',
   'icons/favicon.svg',

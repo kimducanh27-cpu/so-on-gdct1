@@ -50,6 +50,18 @@ Chụp bằng Chrome 155 headless + CDP, `Emulation.setFocusEmulationEnabled`, c
 - `before-ui-v2/` — UI trước restyle (landing 4 viewport, app 8 route + sheet, 404).
 - `after-ui-v2/` — UI sau restyle, cùng bộ ảnh: landing 320/390/768/1280, app today 390/1280, study, library, check, stats, settings, exam-setup, sheet tra đáp án, 404 390. Chụp 2026-10-25 bằng Chrome 155 headless CDP, DPR 1, đồng hồ cố định 24.10.2026, reduced motion; console 0 error, không overflow.
 
+## Motion v3 (2026-10-25)
+
+- `after-motion/` — hero frame 150/450/1050ms + landing 320/390/768/1280 + 404 + app + CTA sau cuộn; README riêng ghi rõ ảnh tĩnh không chứng minh motion, log `motion-audit` 46/46 mới là evidence động.
+- `qa/` được làm mới từ lần `verify.sh` cuối (Chromium + Firefox), gồm 5 viewport landing/404 + app.
+- LHCI local 3 run: Perf 0.98, A11y/BP/SEO 1, LCP median 2,375ms, TBT 20ms, CLS 0.
+- Hero dùng CSS keyframes; GSAP/ScrollTrigger nạp sau `load`; SW `gdct1-v8`.
+
+## Hard review UI (2026-10-25)
+
+- `after-hard-review/` — ảnh landing + 8 route app ở 320/390/1280, study/feedback/sheet sau các fix CTA fixed, feedback scroll, tap-target 44px, topbar 320.
+- Đo: 0 overflow, 0 visible target <44 (chỉ input file ẩn), console 0 error; motion-audit 46/46. README riêng trong thư mục ghi before/after.
+
 ## Ghi chú
 
 - Ảnh chụp trạng thái khởi đầu (0/100) — không tạo cảm giác đã có tiến độ sẵn.

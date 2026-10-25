@@ -205,3 +205,42 @@ Tổng: 13 task (6 M, 7 S). Nền = 3/13 = 23% (< 25%). Không task XL, không U
 - **DoD:** commit + push `main`; live `/`, `/app/`, ảnh, SW v5 trả 200; redirect legacy; manifest giữ `id: "../"`; smoke Chromium + LHCI live; ghi commit rollback.
 - **Bằng chứng:** URL live, commit hash, log smoke.
 - **Kết quả 2026-10-25:** commit `c4ae353`, push `c7ce653..c4ae353 main -> main`; Pages build xong sau ~30 s. Live 16 endpoint 200, landing có form strip + bảng 100 ô, 404 tùy biến, OG 131,423 B, app SW `gdct1-v5` scope `/app/` active/controller, cache đúng, manifest `id: "../"`; redirect legacy 5 route pass; Chromium audit 2 lần liên tiếp pass (lần đầu 1 flake không truy được), Firefox BiDi + Marionette pass, pa11y 2/2 URL 0 error; LHCI live 3 run Perf 1.0, A11y/BP/SEO 1, LCP median 1,207 ms, TBT/CLS 0, TTFB 32 ms. Rollback: `git revert c4ae353` + push; `landing-page` giữ `b3f89a1`.
+
+---
+
+## Phase 3 — Motion v3 “Phiếu thi chuyển động” (2026-10-25, local RC)
+
+| ID | Task | Size | U | Phụ thuộc | Trạng thái |
+|---|---|---|---|---|---|
+| T-MOTION-01 | Vendor GSAP 3.15 + SW cache (v7→v8) + gate skeleton | M | U2 | — | done-verified (local) |
+| T-MOTION-02 | Landing bootstrap/token/failsafe → CSS hero + lazy vendor | M | U1 | T-MOTION-01 | done-verified (local) |
+| T-MOTION-03 | Hero sequence + pen SVG + grid/rail | M | U1 | T-MOTION-02 | done-verified (local) |
+| T-MOTION-04 | Scroll reveals + margin progress + parallax | M | U2 | T-MOTION-02 | done-verified (local) |
+| T-MOTION-05 | Micro-interaction + FAQ + 404 | S | U1 | T-MOTION-02 | done-verified (local) |
+| T-MOTION-06 | App motion module + route/qid gating | M | U2 | T-MOTION-01 | done-verified (local) |
+| T-MOTION-07 | App bars/stats/sheet/toast | S | U2 | T-MOTION-06 | done-verified (local) |
+| T-MOTION-08 | `motion-audit.mjs` + verify integration | M | U2 | T-MOTION-03..07 | done-verified (local) |
+| T-MOTION-09 | Docs/decisions/research/ledger/attribution | S | U1 | T-MOTION-03..08 | done-verified (local) |
+| T-MOTION-10 | Validation RC local, không deploy | S | U2 | tất cả | done-verified (local) |
+
+### Kết quả Phase 3
+
+- **T-MOTION-01:** tải GSAP 3.15.0 + ScrollTrigger từ jsDelivr, SHA-256 ghi trong `assets/vendor/LICENSE-GSAP.txt`; SW `gdct1-v8` (36 entry) precache gsap + motion; check-data 60/60.
+- **T-MOTION-02..05:** hero chuyển sang CSS keyframes để không chặn LCP; GSAP/ScrollTrigger nạp sau `load`; ScrollTrigger batch once; margin progress; parallax 8px pointer fine ≥761; FAQ grid-rows; 404 pen slash; pen ellipse SVG. LCP 2,616 → **2,375ms**.
+- **T-MOTION-06..07:** `app/assets/motion.js` 5,153B; hook `beforeRender/enter(route,qid)`; pick/filter/search không replay; progress bar scaleX; feedback pen ✓/✕; sheet open 200ms close đồng bộ; stats cells/bars.
+- **T-MOTION-08:** `scripts/motion-audit.mjs` 46 check pass; `verify.sh` gọi giữa Chromium và Firefox, fail-closed.
+- **T-MOTION-10:** `bash scripts/verify.sh` exit 0 (html-validate 0, check-data 60, contrast 15, pa11y 2/2, Chromium + Firefox + Marionette, motion 46/46); LHCI local 3 run Perf 0.98, A11y/BP/SEO 1, LCP median 2,375ms, TBT 20ms, CLS 0; SW v7→v8 migration + offline pass. **Chưa commit/push/deploy.**
+- **Blocked:** WebKit/iOS motion, PWA cài thật/đè bản cũ, low-end Android, zoom 400% (không có runtime/thiết bị).
+
+### Hard review fixes (2026-10-25) — sau Motion v3
+
+| ID | Việc | Mức | Trạng thái |
+|---|---|---|---|
+| T-FIX-01 | Route entrance fade-only, bỏ transform `.view`; CTA fixed trên tabbar | cao | done-verified |
+| T-FIX-02 | Feedback scroll một target giữ option đã chọn; reduce-aware | cao | done-verified |
+| T-FIX-03 | Tap-target app ≥44px; switch hit area 44×44; topbar/nav 320 | trung | done-verified |
+| T-FIX-04 | Đo lại FAQ (phantom 22px), giữ grid accordion, check item−summary | trung | done-verified |
+| T-FIX-05 | Nét bút “sổ”: một path, SVG sizing tường minh, chữ mực/nét đỏ, tách dòng | cao | done-verified |
+| T-FIX-06 | Icon tab “Đáp án” → checkbox; bump cache v8 + migration | trung | done-verified |
+
+- Evidence: UI review 320/390/1280 (landing + 8 route + study/feedback/sheet): 0 overflow, 0 visible target <44 (chỉ input file ẩn), console 0 error; motion-audit **46/46** (thêm CTA, feedback context, FAQ, 5 target check); `verify.sh` exit 0; ảnh `.memory/visual_ledger/after-hard-review/`.

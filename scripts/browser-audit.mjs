@@ -250,6 +250,7 @@ async function main() {
           consoleErrors.push({ label, errors: [...currentErrors] });
           fail(`${label} console sạch`, currentErrors.join(' | '));
         } else pass(`${label} console sạch`);
+        await sleep(900);
         await screenshot(page.name, width);
 
         if (page.name === 'landing' && width === 1280) {
@@ -258,8 +259,10 @@ async function main() {
         }
 
         if (page.name === 'landing' && (width === 390 || width === 1280)) {
-          await evaluate('window.scrollTo(0, document.body.scrollHeight); true');
-          await sleep(700);
+          await evaluate('document.documentElement.style.scrollBehavior = "auto"; document.querySelector("#trong-so").scrollIntoView(); true');
+          await sleep(900);
+          await evaluate('window.scrollTo(0, document.documentElement.scrollHeight); true');
+          await sleep(500);
           const after = await pageState();
           const broken = after.imgs.filter((img) => !img.ok);
           if (broken.length) fail(`${label} ảnh tải đủ`, broken.map((img) => img.src).join(', '));
@@ -288,6 +291,7 @@ async function main() {
     await navigate(base);
     await cdp.send('Emulation.setFocusEmulationEnabled', { enabled: true });
     await cdp.send('Page.bringToFront');
+    await evaluate('document.documentElement.style.scrollBehavior = "auto"; true');
 
     const pressKey = async (key, code, keyCode) => {
       await cdp.send('Input.dispatchKeyEvent', {

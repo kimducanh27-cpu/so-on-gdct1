@@ -1,5 +1,40 @@
 # DECISIONS
 
+## 2026-10-25 — Hard review UI: fixed CTA, feedback context, tap targets
+
+**Bối cảnh:** Review sau Motion v3 phát hiện lỗi thật trên mobile: CTA “Câu tiếp” bị khuất, feedback auto-scroll làm mất option đã chọn, nhiều control <44px, 320px brand/nav chật.
+
+**Chọn:**
+- **Route entrance chỉ fade**, không translate/transform `.view`: transform trên ancestor tạo containing block cho `.study-cta` fixed, khiến CTA chui dưới tabbar. Thêm `clearProps:'transform'` và check hồi quy.
+- **Feedback scroll một target duy nhất**: căn `.opt.is-selected` ngay dưới `.study-top`, feedback ở dưới; dùng `behavior:'auto'` khi reduce. Không dùng `scrollIntoView({block:'center'})`.
+- **Tap target ≥44px** cho app: brand/streak/icon/tool/btn-sm/chip/link-btn/select/time/search; switch giữ track 44×25 nhưng hit area 44×44; nav min-width 44; ≤360 ẩn dot/code brand. Thêm check target theo route.
+- **FAQ:** giữ grid accordion; “22px” là phantom box của `::details-content`, không phải layout gap (item − summary = 1px). Check mới đo item thật.
+- **Pen mark:** chữ “sổ” đổi sang mực, nét bút đỏ; bỏ ellipse thứ hai, dùng một path có gap. SVG phải có `width/height:calc()` tường minh vì replaced element không tự kéo giãn theo `inset`; tách dòng 3 bằng `margin-top:.30em` để vòng không chạm dấu phẩy dòng trên.
+- **Icon “Đáp án”:** đổi check + hai gạch rời thành ô vuông + check (checkbox) cùng stroke 1.6; active giữ đỏ.
+- **Cache:** bump `gdct1-v8` sau khi sửa app shell (icon tab); test migration v7→v8 + offline pass.
+
+**Đo:** UI review 320/390/1280: 0 overflow, 0 visible target <44 (chỉ input file ẩn), console 0 error; motion-audit 46/46; verify exit 0. **Chưa deploy.**
+
+## 2026-10-25 — Motion v3: GSAP tự host + hero CSS, app subtle
+
+**Bối cảnh:** Người dùng yêu cầu nâng visual/motion toàn diện, ưu tiên GSAP; ràng buộc site tĩnh, 0 third-party, LCP ≤2.5s, reduced-motion/no-JS, gate Lighthouse.
+
+**Chọn:**
+- **GSAP 3.15.0 core + ScrollTrigger tự host** trong `assets/vendor/` và `app/assets/vendor/` (bản core cho app). Không CDN, không thêm engine khác.
+  - SHA-256: gsap `92bb9a96…570fbb`, ScrollTrigger `b0b14d67…916a2`; ghi trong `LICENSE-GSAP.txt`.
+  - License GreenSock Standard “no charge” (không phải OSI); giữ nguyên header license; đã ghi README.
+- **Hero landing bằng CSS keyframes**, không dùng GSAP trong critical path: line stagger, grid/rail scan, 7 cờ, pen draw. GSAP/ScrollTrigger chỉ nạp **sau `load`** cho scroll reveal, progress, parallax, micro.
+- **App subtle:** `app/assets/motion.js` + GSAP core; entrance chỉ khi route/qid đổi; feedback/pen mark, bar scaleX, sheet/toast. Không scroll reveal nội dung app.
+- **SW `gdct1-v8`**, precache `assets/motion.js` + `assets/vendor/gsap.min.js`; migration/offline đã test.
+- **View Transitions API: hoãn** (router đồng bộ, focus/scroll/test; Firefox cross-document chưa có). Ghi backlog.
+- **Không deploy** trong phiên này; live vẫn UI v2 `d0f962c`.
+
+**Loại (có đo):** SplitText 3.6KB gzip (đã có 3 `.line`, tránh a11y/re-split); Lenis 5.4KB (scroll hijack, hại AT); Lottie 76.6KB (không cần scene JSON); tsParticles engine 24.3KB (trang trí, lệch brand); Motion 46.5KB và anime 29.1KB (trùng vai trò GSAP); SplitType (license không rõ, ngừng 2023); pinning/horizontal/particle/custom cursor/tilt (lệch form ngắn, hại mobile/a11y).
+
+**Đo sau triển khai:** LHCI local 3 run: Perf 0.98, A11y/BP/SEO 1, LCP median 2,375ms (max 2,385), TBT 20ms, CLS 0; `verify.sh` exit 0; motion-audit 46/46. LCP vượt 2.5s khi GSAP còn trong critical path (2,616ms) → đổi hero sang CSS + lazy vendor; không nới ngưỡng.
+
+**Hệ quả:** `AGENTS.md` có ngoại lệ dependency GSAP; mọi thay đổi motion phải chạy `bash scripts/verify.sh` (gồm motion-audit) và cập nhật ledger; tăng version GSAP phải cập nhật SHA + license + test lại.
+
 ## 2026-10-24 — Hướng thị giác landing: “sổ chỉ mục kỳ thi” (chọn A)
 
 **Bối cảnh:** Brief yêu cầu dùng lại nhận diện app (`#F4F1EA`, Newsreader/Space, nền giấy, accent rust). Đối tượng: sinh viên ôn GDCT1 trên điện thoại, hạn 12.11.2026.
@@ -35,6 +70,7 @@
 **Lý do:** “Đơn giản nhất đủ dùng”; tránh bundle và pipeline cho một trang.
 **Hệ quả:** Không có typecheck/build gate; bù bằng `verify.sh`, html-validate, pa11y, Lighthouse.
 **Ảnh hưởng:** T-LAND-*, T-QA-01, T-PERF-01. [GIẢ ĐỊNH]
+**Cập nhật 2026-10-25:** vẫn không build/framework/package manager; có **ngoại lệ GSAP tự host** cho motion (xem decision Motion v3 ở đầu file), không CDN và không thêm engine khác.
 
 ## 2026-10-24 — Migration PWA: kill-switch + cache `gdct1-v4` + `id: "../"`
 **Bối cảnh:** SW `gdct1-v3` đang ở scope `/so-on-gdct1/`, cache 32 file của app root; manifest cũ có `start_url: "./#/today"`, `scope: "./"`.

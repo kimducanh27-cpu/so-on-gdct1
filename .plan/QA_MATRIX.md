@@ -1,0 +1,34 @@
+# QA MATRIX — Motion v3 + hard review (local RC)
+
+**Protocol:** web-agent/2.5 · **Work mode:** `ui_rework` · **Delivery target:** release_candidate (local) · **Deployment:** `not_deployed` · **Review:** `awaiting_feedback` (chưa có accepted).
+
+**Context:** repo `kimducanh27-cpu/so-on-gdct1`, HEAD `d0f962c` + dirty tree (xem `git status`; không commit trong phiên này). OS Windows 10.0.26200; Node **v24.21.0**; Chrome **155.0.8059.86**; Firefox **158.0.1**; local server `http://127.0.0.1:8123/so-on-gdct1/`, không gzip; html-validate **9.7.1**, pa11y-ci **5.0.0**, linkinator **8.1.0**, LHCI **0.14.0**, GSAP **3.15.0**. Baseline production: UI v2 `c4ae353` (SW v5); local target: `gdct1-v8`.
+
+**Obligation:** `required` = bắt buộc theo scope; `advisory` = tham khảo. Stage `local`, environment `local-test`; gate group G2 lint, G3 schema, G5 serve, G6 E2E, G7 UI/a11y/motion, G8 perf, G9 security/PWA. Evidence logs nằm ở `$QA_OUT` (`/tmp/gdct1-qa` mặc định); screenshot trong repo; report LHCI trong `.lighthouseci/` (ignored).
+
+| R / AC | V | Obl | Stage / Gate | Method / command | Expected | Actual | Status | Evidence |
+|---|---|---|---|---|---|---|---|---|
+| R-UI-14 CTA “Câu tiếp” không bị fixed/sticky che | V-UI-14 | required | local / G7 | `node scripts/motion-audit.mjs` | `.view` transform `none`; CTA cách tabbar ≥8px; focus ring 2px không bị che | transform `none`; gap 12px; ring bottom 770 ≤ tabbar 778; focus active, outline 2px | pass | `motion.log`; `after-hard-review/app-320-study.png` |
+| R-UI-15 Feedback giữ option đã chọn | V-UI-15 | required | local / G7 | motion-audit | selected + feedback in viewport, `elementFromPoint` không bị che | selected top 174/263; feedback 508/758; cả hai unobstructed | pass | `motion.log`; `app-390-feedback.png` |
+| R-UI-16 Target hiển thị ≥44px (policy > WCAG 2.5.8 24px) | V-UI-16 | required | local / G7 | motion-audit 5 route targets + UI review 320/390/1280 | 0 target hiển thị <44px (bỏ input file ẩn) | 0 target <44; chỉ 3 input file 1×1 ẩn | pass | `motion.log`; `after-hard-review/README.md` |
+| R-UI-17 Topbar/nav 320 không wrap/overflow | V-UI-17 | required | local / G7 | UI review 320; browser-audit 320/360/390/768/1280 | brand 1 dòng, nav ≥44, overflow 0 | overflow 0; brand “Sổ Ôn” 1 dòng; nav 44 | pass | `ui-review-final3.log`; `app-320-today/study.png` |
+| R-UI-18 Nét bút “sổ” bao ngoài glyph, không cắt chữ/dấu | V-UI-18 | required | local / G7 | Chrome screenshots 320/390/1280 + manual inspection | một path, chữ mực/nét đỏ, không giao glyph; before/after có | path đơn có gap; SVG sizing tường minh; ảnh crop 3 viewport | pass (visual, subjective) | `pen-1280/390/320.png`; `before-pen-detail.png`; `full-*` |
+| R-UI-19 Icon tab “Đáp án” rõ nghĩa, active đỏ | V-UI-19 | required | local / G7 | Chrome screenshot active/inactive 390 | icon checkbox 20px; active rust | checkbox + check; active rust; 4× crop | pass | `tab-active-390.png`; `tab-inactive-390.png` |
+| R-MOTION-01 Motion contract normal/reduce/no-JS/fallback | V-MOTION-01 | required | local / G7 | `node scripts/motion-audit.mjs` | 46/46; reduce `getAnimations`=0; no-JS hiện; block GSAP hiện | 46/46 pass; reduce 0; no-JS/block pass | pass | `motion.log`; MO-* trong UI_REVIEW |
+| R-A11Y-01 Focus visible/không bị che, keyboard landing + app CTA | V-A11Y-01 | required | local / G7 | `scripts/browser-audit.mjs` + motion-audit | landing 24 bước ring ≥2px không che; app CTA focus ring 2px không che | landing pass; app CTA ring 2px, ring bottom 770 ≤ tabbar 778 | pass (app chỉ CTA, không toàn bộ app) | `chromium.log`; `motion.log`; `.memory/visual_ledger/focus-cta-1280.png`, `focus-skip-1280.png` |
+| R-PERF-01 LCP/TBT/CLS/score theo median 3 run | V-PERF-01 | required | local / G8 | `npx --yes @lhci/cli@0.14.0 autorun --config=lighthouserc.json` | Perf≥.90, A11y/SEO=1, BP≥.95, LCP≤2500, TBT≤200, CLS≤.1; `aggregationMethod:median` | Perf .98; LCP median **2,375ms** (2,370/2,385/2,375); TBT median **20ms** (13/30/20); CLS 0; exit 0 | pass | `/tmp/lhci-median.log`; `.lighthouseci/` (ignored) |
+| R-PWA-01 SW v8 precache/migration/offline | V-PWA-01 | required | local / G9 | `node scripts/sw-audit.mjs` (server running) | scope `/app/`, 36 entry, v7→v8 xoá v7 giữ cache ngoài, offline render | pass; keys `gdct1-v8,landing-probe`; offline 1,147 ký tự | pass (migration mô phỏng) | `scripts/sw-audit.mjs`; log `/tmp/sw-audit-v8.log` |
+| R-DATA-01 100 câu/44/56/7/6 nhóm/khóa localStorage | V-DATA-01 | required | local / G3 | `node scripts/check-data.mjs` | 60/60 | 60/60 pass | pass | `data.log` |
+| R-SEC-01 Secret + file khóa + conflict | V-SEC-01 | required | local / G9 | `bash scripts/verify.sh` section 4 | 0 secret/khóa/conflict | pass | pass | `verify-*.log`; `secrets.txt` |
+| R-BUILD-01 Syntax/HTML/JSON/serve | V-BUILD-01 | required | local / G2/G5 | `bash scripts/verify.sh` sections 1–3, 6 | 0 error; HTTP 200/404 đúng | pass | pass | `htmlvalidate.log`; `verify-*.log` |
+| R-UI-20 Không overflow ngang desktop/mobile | V-UI-20 | required | local / G7 | browser-audit + UI review 320/360/390/768/1280/1440 | 0 overflow | 0 ở mọi viewport đã đo | pass | `chromium.log`; `ui-review-final3.log` |
+| R-MOTION-02 Negative control gate | V-NEG-01 | required | local / G7 | motion-audit block GSAP | không có entrance khi engine bị chặn; fallback vẫn dùng | q opacity 1 ngay; app vẫn render | pass | `motion.log` |
+| WebKit/iOS thật | V-WEBKIT-01 | required (ngoài capacity) | local / G7 | — | render/motion/focus | không có runtime/thiết bị | **blocked** | README/PROJECT_STATE |
+| PWA cài thật/đè bản cũ | V-PWA-INSTALL-01 | required khi release | local / G9 | — | cài/không trùng | chưa cài thật | **not_run** | PROJECT_STATE |
+| Zoom 400% | V-ZOOM-01 | advisory | local / G7 | — | reflow đúng | chưa tự động | **not_run** | PROJECT_STATE |
+| Low-end Android | V-LOWEND-01 | advisory | local / G8 | — | không jank | chưa đo | **not_run** | PROJECT_STATE |
+| Production live sau deploy | V-LIVE-01 | required ở `post_deploy` | post_deploy / G9 | — | host smoke/revision | chưa được phép deploy | **not_run** | deployment_state |
+
+**Aggregation:** `verified_change` + `verified_local` cho scope hard review/Motion v3 với các check required ở trên; **không** claim `release_ready` (chưa có sign-off/real PWA/WebKit); deployment_state `not_deployed`. Baseline live UI v2 `c4ae353` tách riêng; không suy production đã verify.
+
+**Ngoại lệ/giới hạn:** GSAP license “no charge”, không OSI (ghi vendor/README/DECISIONS); LHCI local không gzip; migration SW mô phỏng bằng cache v7 + reload, không phải bản cài cũ thật; V-UI-18/19 là visual inspection có ảnh before/after, không phải pixel-diff tự động.

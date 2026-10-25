@@ -100,7 +100,7 @@ else
   pass "không có file khóa/bí mật"
 fi
 
-RUNTIME_FILES=(index.html 404.html assets/landing.js assets/landing.css sw.js app/index.html app/assets/app.js app/assets/app.css app/sw.js)
+RUNTIME_FILES=(index.html 404.html assets/landing.js assets/landing.css assets/motion.js sw.js app/index.html app/assets/app.js app/assets/app.css app/assets/motion.js app/sw.js assets/vendor/gsap.min.js assets/vendor/ScrollTrigger.min.js app/assets/vendor/gsap.min.js)
 forbidden_status=0
 grep -nE 'TODO|FIXME|debugger|console\.(log|debug)|lorem ipsum' "${RUNTIME_FILES[@]}" >"$QA_OUT/forbidden.txt" 2>/dev/null || forbidden_status=$?
 if [ "$forbidden_status" -eq 0 ]; then
@@ -166,6 +166,11 @@ check_http "app/data/questions.js" 200 "questions"
 check_http "app/data/answers.js" 200 "answers"
 check_http "assets/landing.css" 200 "landing CSS"
 check_http "assets/landing.js" 200 "landing JS"
+check_http "assets/motion.js" 200 "landing motion"
+check_http "assets/vendor/gsap.min.js" 200 "GSAP vendor"
+check_http "assets/vendor/ScrollTrigger.min.js" 200 "ScrollTrigger vendor"
+check_http "app/assets/motion.js" 200 "app motion"
+check_http "app/assets/vendor/gsap.min.js" 200 "GSAP vendor app"
 check_http "assets/og-cover.png" 200 "OG cover"
 check_http "assets/landing/today-390.webp" 200 "ảnh Hôm nay"
 check_http "assets/landing/today-1280.webp" 200 "ảnh Hôm nay desktop"
@@ -209,6 +214,13 @@ if QA_BASE="$BASE" QA_SHOTS="$QA_OUT/shots" node scripts/browser-audit.mjs >"$QA
 else
   fail "Chromium audit"
   grep -E '^FAIL|ERROR' "$QA_OUT/chromium.log" | head -30
+fi
+if QA_BASE="$BASE" QA_SHOTS="$QA_OUT/shots" node scripts/motion-audit.mjs >"$QA_OUT/motion.log" 2>&1; then
+  pass "Motion: CSS hero/lazy GSAP, reveal, reduce, no-JS, app gating/bars/sheet"
+  tail -2 "$QA_OUT/motion.log"
+else
+  fail "Motion audit"
+  grep -E '^FAIL|ERROR' "$QA_OUT/motion.log" | head -30
 fi
 if QA_BASE="$BASE" QA_SHOTS="$QA_OUT/shots" node scripts/firefox-smoke.mjs >"$QA_OUT/firefox.log" 2>&1; then
   pass "Firefox: layout 5 viewport, console, 8 route app"
